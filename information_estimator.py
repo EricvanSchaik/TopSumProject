@@ -1,4 +1,3 @@
-from audioop import avg
 import numpy as np
 
 import torch
