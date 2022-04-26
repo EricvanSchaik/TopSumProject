@@ -2,10 +2,9 @@ import numpy as np
 
 import torch
 import torch.nn as nn
-import torch.optim as optim
-from torch.utils.data import Dataset, DataLoader
+import torch.optim
+from torch.utils.data import DataLoader
 
-from gensim.models import Word2Vec
 import gensim.downloader
 
 training_text = 'this text is used to train the recurrent neural network'
@@ -17,14 +16,22 @@ def word_to_vec(word):
     ##TODO check for missing words not in glove_vectors
     return glove_vectors[word]
 
-data = torch.Tensor([word_to_vec(word) for word in training_text.split()])
+# Create a numpy array of word vectors
+training_vectors = np.array([word_to_vec(word) for word in training_text.split()])
 
-INPUT_SIZE = 25
-SEQ_LENGTH = 5
-HIDDEN_SIZE = 2
-NUM_LAYERS = 1
-BATCH_SIZE = 4
+# Create a numpy array with all zeros with the same dimension as the training vectors (makes concatenation easier)
+zero_vector = np.array([[0]*25])
 
-rnn = nn.RNN(input_size=INPUT_SIZE, hidden_size=HIDDEN_SIZE, num_layers=NUM_LAYERS, batch_first=True)
-inputs = data.view(BATCH_SIZE, SEQ_LENGTH, INPUT_SIZE)
-out, h_n = rnn(inputs)
+# Since the RNN needs to predict the next word, it is easiest to take as input a zero vector followed by all the word vectors, while the labels can be seen as the opposite
+training_data = DataLoader(torch.Tensor(np.concatenate((zero_vector, training_vectors))), batch_size=5)
+training_labels = DataLoader(torch.Tensor(np.concatenate((training_vectors, zero_vector))), batch_size=5)
+
+rnn = nn.RNN(25, 25, 1)
+
+criterion = nn.CrossEntropyLoss()
+optimizer = torch.optim.SGD(rnn.parameters(), lr=0.01)
+
+for epoch in range(1, 5):
+    for i, (batch_data, batch_labels) in enumerate(zip(training_data, training_labels)):
+        optimizer.zero_grad()
+        prob = rnn(batch_data)
