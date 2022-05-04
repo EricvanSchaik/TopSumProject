@@ -3,7 +3,6 @@ import torch.nn as nn
 import torch.optim
 from torch.utils.data import DataLoader
 from datasets.my_custom_dataset import MyCustomDataset
-import numpy as np
 
 criterion = nn.MSELoss()
 
@@ -28,6 +27,7 @@ def train_rnn(data, labels):
             loss.backward()
             optimizer.step()
         lss_per_epoch += [sum(lss_per_batch) / len(lss_per_batch)]
+    print(lss_per_epoch)
     return rnn
 
 def test_rnn(rnn, data, labels):
@@ -42,11 +42,18 @@ def test_rnn(rnn, data, labels):
     print('average mean squared error of batch: ')
     print(sum(mse_per_batch) / len(mse_per_batch))
 
-yelp_path = 'D:/Users/Eric_/Downloads/yelp_sample.json'
-trained_rnn = train_rnn(MyCustomDataset(path_to_dataset=yelp_path), MyCustomDataset(path_to_dataset=yelp_path, labels=True))
-
 print('information estimation of meansum: ')
-meansum_path = 'D:/Users/Eric_/Downloads/meansum_summaries.json'
-test_rnn(trained_rnn, MyCustomDataset(path_to_dataset=meansum_path), MyCustomDataset(path_to_dataset=meansum_path, labels=True))
+
+yelp_path = 'D:/Users/EricvanSchaik/Downloads/processed_yelp_sample.json'
+yelp_rnn = train_rnn(MyCustomDataset(path_to_dataset=yelp_path), MyCustomDataset(path_to_dataset=yelp_path, labels=True))
+
+meansum_path = 'D:/Users/EricvanSchaik/Downloads/processed_summaries.json'
+test_rnn(yelp_rnn, MyCustomDataset(path_to_dataset=meansum_path), MyCustomDataset(path_to_dataset=meansum_path, labels=True))
 
 print('information estimation of pegasus: ')
+
+xsum_path = 'D:/Users/EricvanSchaik/Downloads/xsum.json'
+xsum_rnn = train_rnn(MyCustomDataset(path_to_dataset=xsum_path), MyCustomDataset(path_to_dataset=xsum_path, labels=True))
+
+pegasus_path = 'D:/Users/EricvanSchaik/Downloads/pegasus_summaries.json'
+test_rnn(xsum_rnn, MyCustomDataset(path_to_dataset=pegasus_path), MyCustomDataset(path_to_dataset=pegasus_path, labels=True))
