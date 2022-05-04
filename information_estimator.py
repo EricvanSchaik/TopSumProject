@@ -2,10 +2,10 @@ import torch
 import torch.nn as nn
 import torch.optim
 from torch.utils.data import DataLoader
-from amazon_sample_dataset import AmazonSampleDataset
+from datasets.my_custom_dataset import MyCustomDataset
 import numpy as np
 
-summary_texts =  ['we need the information amount of this text', 'we need the information amount of this text']
+criterion = nn.MSELoss()
 
 def train_rnn(data, labels):
     training_data = DataLoader(data, batch_size=5, shuffle=True)
@@ -13,27 +13,40 @@ def train_rnn(data, labels):
 
     rnn = nn.RNN(25, 25, 3)
 
-    criterion = nn.MSELoss()
     optimizer = torch.optim.SGD(rnn.parameters(), lr=0.01)
 
     lss_per_epoch = []
     for _ in range(1, 10):
-        print('new epoch')
         lss_per_batch = []
         for _, (batch_data, batch_labels) in enumerate(zip(training_data, training_labels)):
             optimizer.zero_grad()
             prob = rnn(batch_data)
+            
+            ## Take all the output states of the RNN, not the last hidden state
             loss = criterion(prob[0], batch_labels)
             lss_per_batch += [loss.item()]
             loss.backward()
             optimizer.step()
         lss_per_epoch += [sum(lss_per_batch) / len(lss_per_batch)]
-    print(lss_per_epoch)
-
     return rnn
 
-def test_rnn(rnn, summaries):
-    return 0
+def test_rnn(rnn, data, labels):
+    test_data = DataLoader(data, batch_size=10, shuffle=True)
+    test_labels = DataLoader(labels, batch_size=10, shuffle=True)
 
-train_rnn(AmazonSampleDataset(), AmazonSampleDataset(labels=True))
-# test_rnn(summary_texts)
+    mse_per_batch = []
+    for _, (batch_data, batch_labels) in enumerate(zip(test_data, test_labels)):
+        prob = rnn(batch_data)
+        mse = criterion(prob[0], batch_labels)
+        mse_per_batch += [mse.item()]
+    print('average mean squared error of batch: ')
+    print(sum(mse_per_batch) / len(mse_per_batch))
+
+yelp_path = 'D:/Users/Eric_/Downloads/yelp_sample.json'
+trained_rnn = train_rnn(MyCustomDataset(path_to_dataset=yelp_path), MyCustomDataset(path_to_dataset=yelp_path, labels=True))
+
+print('information estimation of meansum: ')
+meansum_path = 'D:/Users/Eric_/Downloads/meansum_summaries.json'
+test_rnn(trained_rnn, MyCustomDataset(path_to_dataset=meansum_path), MyCustomDataset(path_to_dataset=meansum_path, labels=True))
+
+print('information estimation of pegasus: ')

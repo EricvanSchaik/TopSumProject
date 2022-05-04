@@ -1,23 +1,16 @@
-from multiprocessing.sharedctypes import Value
 import pandas as pd
 from torch.utils.data import Dataset
 import gensim.downloader
 import numpy as np
 import torch
 
-class AmazonSampleDataset(Dataset):
+class MyCustomDataset(Dataset):
     
-    def __init__(self, labels=False) -> None:
+    def __init__(self, path_to_dataset, labels=False) -> None:
         super().__init__()
-        self.PATH_TO_DATASET = 'D:/Users/Eric_/Downloads/sample.json'
-        self.dataset = pd.read_json(self.PATH_TO_DATASET, lines=True)
+        self.dataset = pd.read_json(path_to_dataset, lines=True)
         
         self.glove_vectors = gensim.downloader.load('glove-twitter-25')
-
-        self.data = ['this text is used to train the recurrent neural network', 'this text is also used to train the recurrent neural network']
-
-        # Create a numpy array of word vectors
-        # training_vectors = np.concatenate([np.array([self.word_to_vec(word) for word in training_text.split()]) for training_text in self.dataset['text'].tolist()])
 
         training_vectors = []
         for review in self.dataset['text'].tolist():
