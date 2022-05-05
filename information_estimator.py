@@ -44,13 +44,13 @@ def test_rnn(rnn, data, labels):
     print('average mean squared error of batch: ')
     print(sum(mse_per_batch) / len(mse_per_batch))
 
-# print('information estimation of meansum: ')
+print('information estimation of meansum: ')
 
-# yelp_path = 'D:/Users/EricvanSchaik/Downloads/processed_yelp_sample.json'
-# yelp_rnn = train_rnn(MyCustomDataset(path_to_dataset=yelp_path), MyCustomDataset(path_to_dataset=yelp_path, labels=True))
+yelp_path = './my_datasets/yelp_text.json'
+yelp_rnn = train_rnn(MyCustomDataset(path_to_dataset=yelp_path), MyCustomDataset(path_to_dataset=yelp_path, labels=True))
 
-# meansum_path = 'D:/Users/EricvanSchaik/Downloads/processed_summaries.json'
-# test_rnn(yelp_rnn, MyCustomDataset(path_to_dataset=meansum_path), MyCustomDataset(path_to_dataset=meansum_path, labels=True))
+meansum_path = './my_datasets/yelp_summaries.json'
+test_rnn(yelp_rnn, MyCustomDataset(path_to_dataset=meansum_path), MyCustomDataset(path_to_dataset=meansum_path, labels=True))
 
 print('information estimation of pegasus: ')
 
