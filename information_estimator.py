@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.optim
 from torch.utils.data import DataLoader
 from my_datasets.my_information_dataset import MyInformationDataset
+import os
 
 criterion = nn.MSELoss()
 
@@ -55,7 +56,7 @@ file = open('./information_results.txt', 'a')
 file.write('\nmeansum: ')
 file.close()
 
-yelp_path = './my_datasets/yelp_text.json'
+yelp_path = './my_datasets/yelp_text1.json'
 yelp_rnn = train_rnn(MyInformationDataset(path_to_dataset=yelp_path), MyInformationDataset(path_to_dataset=yelp_path, labels=True))
 
 meansum_path = './my_datasets/meansum_summaries_trimmed.json'
@@ -66,8 +67,8 @@ file = open('./information_results.txt', 'a')
 file.write('\npegasus: ')
 file.close()
 
-xsum_path = './my_datasets/xsum_text.json'
-xsum_rnn = train_rnn(MyInformationDataset(path_to_dataset=xsum_path), MyInformationDataset(path_to_dataset=xsum_path, labels=True))
+# xsum_path = './my_datasets/xsum_text.json'
+# xsum_rnn = train_rnn(MyInformationDataset(path_to_dataset=xsum_path), MyInformationDataset(path_to_dataset=xsum_path, labels=True))
 
-pegasus_path = './my_datasets/pegasus_summaries.json'
-test_rnn(xsum_rnn, MyInformationDataset(path_to_dataset=pegasus_path), MyInformationDataset(path_to_dataset=pegasus_path, labels=True))
+pegasus_path = os.path.join(os.getcwd(), 'my_datasets', 'pegasus_on_yelp_summaries.json')
+test_rnn(yelp_rnn, MyInformationDataset(path_to_dataset=pegasus_path), MyInformationDataset(path_to_dataset=pegasus_path, labels=True))
