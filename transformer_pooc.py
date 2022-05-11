@@ -11,10 +11,10 @@ if use_cuda and torch.cuda.is_available():
 else:
   device = torch.device("cpu")
 
-cache_directory = "D:\\Users\\Eric_\\.cache\\"
+# cache_directory = "D:\\Users\\Eric_\\.cache\\"
 
-os.environ["TRANSFORMERS_CACHE"] = cache_directory
-os.environ["HD_DATASETS_CACHE"] = cache_directory
+# os.environ["TRANSFORMERS_CACHE"] = cache_directory
+# os.environ["HD_DATASETS_CACHE"] = cache_directory
 
 classifier = pipeline("sentiment-analysis")
 summarizer = pipeline("summarization")
@@ -50,5 +50,5 @@ print(classifier([review_text, summary]))
 print(classifier([review_text2, summary2]))
 
 # %%
-review_dataset = load_dataset("amazon_us_reviews", "Toys_v1_00", cache_dir=cache_directory)
+review_dataset = load_dataset("amazon_us_reviews", "Toys_v1_00")
 print(review_dataset)
