@@ -10,7 +10,7 @@ def train_rnn(data, labels):
     training_data = DataLoader(data, batch_size=5, shuffle=True)
     training_labels = DataLoader(labels, batch_size=5, shuffle=True)
 
-    rnn = nn.RNN(25, 25, 3)
+    rnn = nn.RNN(25, 25, 1)
 
     optimizer = torch.optim.SGD(rnn.parameters(), lr=0.01)
 
@@ -29,7 +29,7 @@ def train_rnn(data, labels):
             optimizer.step()
         lss_per_epoch += [sum(lss_per_batch) / len(lss_per_batch)]
     file = open('./information_results.txt', 'a')
-    file.write('training results: ' + str(lss_per_epoch))
+    file.write('\n\ttraining results: ' + str(lss_per_epoch))
     file.close()
     print(lss_per_epoch)
     return rnn
@@ -40,7 +40,6 @@ def test_rnn(rnn, data, labels):
 
     mse_per_batch = []
     for _, (batch_data, batch_labels) in enumerate(zip(test_data, test_labels)):
-        print('testing')
         prob = rnn(batch_data)
         mse = criterion(prob[0], batch_labels)
         mse_per_batch += [mse.item()]
@@ -48,27 +47,27 @@ def test_rnn(rnn, data, labels):
     avg = sum(mse_per_batch) / len(mse_per_batch)
     print(avg)
     file = open('./information_results.txt', 'a')
-    file.write('test results: ' + str(avg))
+    file.write('\n\ttest results: ' + str(avg))
     file.close()
 
 print('information estimation of meansum: ')
 file = open('./information_results.txt', 'a')
-file.write('meansum: ')
+file.write('\nmeansum: ')
 file.close()
 
 yelp_path = './my_datasets/yelp_text.json'
 yelp_rnn = train_rnn(MyInformationDataset(path_to_dataset=yelp_path), MyInformationDataset(path_to_dataset=yelp_path, labels=True))
 
-meansum_path = './my_datasets/yelp_summaries.json'
+meansum_path = './my_datasets/meansum_summaries_trimmed.json'
 test_rnn(yelp_rnn, MyInformationDataset(path_to_dataset=meansum_path), MyInformationDataset(path_to_dataset=meansum_path, labels=True))
 
 print('information estimation of pegasus: ')
 file = open('./information_results.txt', 'a')
-file.write('pegasus: ')
+file.write('\npegasus: ')
 file.close()
 
 xsum_path = './my_datasets/xsum_text.json'
 xsum_rnn = train_rnn(MyInformationDataset(path_to_dataset=xsum_path), MyInformationDataset(path_to_dataset=xsum_path, labels=True))
 
-pegasus_path = './my_datasets/xsum_summaries.json'
+pegasus_path = './my_datasets/pegasus_summaries.json'
 test_rnn(xsum_rnn, MyInformationDataset(path_to_dataset=pegasus_path), MyInformationDataset(path_to_dataset=pegasus_path, labels=True))

@@ -1,5 +1,6 @@
 import pandas as pd
+from helpers.serialization import df_read_json, df_to_json
 
-dataset = pd.read_json('C:/Users/ERSCHAIK/Downloads/yelp_sample.json', lines=True)
+dataset = df_read_json('C:/Users/ERSCHAIK/Downloads/yelp_sample.json')
 dataset = pd.DataFrame(dataset['text'])
-dataset.to_json('./my_datasets/yelp_text.json', orient='records', lines=True)
+df_to_json(dataset, './my_datasets/yelp_text.json')

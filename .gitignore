@@ -1,6 +1,3 @@
 .idea
 *.pyc
-yelp_summaries_labels_vectorized.csv
-yelp_summaries_vectorized.csv
-yelp_text_labels_vectorized.csv
-yelp_text_vectorized.csv
+*_vectorized.csv
