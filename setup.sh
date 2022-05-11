@@ -8,4 +8,3 @@ conda install -c huggingface transformers
 conda install -c huggingface -c conda-forge datasets
 conda install sentencepiece
 conda install gensim
-conda install pandas
