@@ -11,7 +11,6 @@ def summarize_yelp():
     df_split = df_split[df_split['text'].map(len) > 64]
     df_split = df_split[df_split['text'].map(len) < 512]
     yelp_df_sample = yelp_df_sample.filter(items=df_split.index, axis=0)
-    pegasus_df = pd.DataFrame.from_dict(pegasus(inputs=yelp_df_sample))
+    pegasus_df = pd.DataFrame.from_dict(pegasus(inputs=yelp_df_sample.to_list()))
     pegasus_df.rename(columns={'summary_text': 'text'}, inplace=True)
-    pegasus_df = pegasus_df[len(pegasus_df['text']) > 50]
     df_to_json(pegasus_df, os.path.join(os.getcwd(), 'my_datasets', 'pegasus_on_yelp_summaries.json'))
