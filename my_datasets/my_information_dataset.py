@@ -4,19 +4,16 @@ import gensim.downloader
 import numpy as np
 import torch
 from os.path import exists
+from helpers.serialization import df_read_json, df_to_json
 
 class MyInformationDataset(Dataset):
     
     def __init__(self, path_to_dataset, labels=False) -> None:
         super().__init__()
         print('dataset initialization')
-        path_to_vectorized = ''
-        if labels:
-            path_to_vectorized = path_to_dataset[:-5] + '_labels_vectorized.csv'
-        else:
-            path_to_vectorized = path_to_dataset[:-5] + '_vectorized.csv'
+        path_to_vectorized = path_to_dataset[:-5] + '_vectorized.json'
         if (exists(path_to_vectorized)):
-            np_array = pd.read_csv(path_to_vectorized, index_col=0).to_numpy()
+            training_vectors = df_read_json(path_to_vectorized).to_numpy()
         else:
             self.dataset = pd.read_json(path_to_dataset, lines=True)
             self.glove_vectors = gensim.downloader.load('glove-twitter-25')
@@ -34,16 +31,17 @@ class MyInformationDataset(Dataset):
                 else:
                     training_vectors = np.concatenate((training_vectors, new_vectors))
 
-            # Create a numpy array with all zeros with the same dimension as the training vectors (makes concatenation easier)
-            zero_vector = np.array([[0]*25])
+            df_to_json(pd.DataFrame(training_vectors), path_to_dataset[:-5] + '_vectorized.json')
+ 
+       # Create a numpy array with all zeros with the same dimension as the training vectors (makes concatenation easier)
+        zero_vector = np.array([[0]*25])
 
-            # Since the RNN needs to predict the next word, it is easiest to take as input a zero vector followed by all the word vectors, while the labels can be seen as the opposite
-            if labels:
-                np_array = np.concatenate((zero_vector, training_vectors))
-                pd.DataFrame(np_array).to_csv(path_to_dataset[:-5] + '_labels_vectorized.csv')
-            else:
-                np_array = np.concatenate((training_vectors, zero_vector))
-                pd.DataFrame(np_array).to_csv(path_to_dataset[:-5] + '_vectorized.csv')
+        # Since the RNN needs to predict the next word, it is easiest to take as input a zero vector followed by all the word vectors, while the labels can be seen as the opposite
+        if labels:
+            np_array = np.concatenate((zero_vector, training_vectors))
+        else:
+            np_array = np.concatenate((training_vectors, zero_vector))
+
         self.data = torch.Tensor(np_array)
 
     def __len__(self):

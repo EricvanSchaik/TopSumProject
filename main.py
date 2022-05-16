@@ -1,4 +1,5 @@
-from preprocessing import pegasus_on_yelp
+from cmath import inf
+import information_estimator
 
 if __name__ == '__main__':
-    pegasus_on_yelp.summarize_yelp()
+    information_estimator.estimate_information()
