@@ -57,11 +57,14 @@ def estimate_information():
     file.write('\nmeansum: ')
     file.close()
 
-    yelp_path = './my_datasets/yelp_text1.json'
-    yelp_rnn = train_rnn(MyInformationDataset(path_to_dataset=yelp_path), MyInformationDataset(path_to_dataset=yelp_path, labels=True))
+    # yelp_path = './my_datasets/yelp_text1.json'
+    # yelp_rnn = train_rnn(MyInformationDataset(path_to_dataset=yelp_path), MyInformationDataset(path_to_dataset=yelp_path, labels=True))
+
+    wiki_path = './my_datasets/wikitext.json'
+    wiki_rnn = train_rnn(MyInformationDataset(path_to_dataset=wiki_path), MyInformationDataset(path_to_dataset=wiki_path, labels=True))
 
     meansum_path = './my_datasets/meansum_summaries_trimmed.json'
-    test_rnn(yelp_rnn, MyInformationDataset(path_to_dataset=meansum_path), MyInformationDataset(path_to_dataset=meansum_path, labels=True))
+    test_rnn(wiki_rnn, MyInformationDataset(path_to_dataset=meansum_path), MyInformationDataset(path_to_dataset=meansum_path, labels=True))
 
     print('information estimation of pegasus: ')
     file = open('./information_results.txt', 'a')
@@ -69,4 +72,4 @@ def estimate_information():
     file.close()
 
     pegasus_path = os.path.join(os.getcwd(), 'my_datasets', 'pegasus_on_yelp_summaries.json')
-    test_rnn(yelp_rnn, MyInformationDataset(path_to_dataset=pegasus_path), MyInformationDataset(path_to_dataset=pegasus_path, labels=True))
+    test_rnn(wiki_rnn, MyInformationDataset(path_to_dataset=pegasus_path), MyInformationDataset(path_to_dataset=pegasus_path, labels=True))

@@ -6,6 +6,7 @@ from helpers.word_to_vec import word_to_vec
 def calculate_relevance():
     meansum_dataset = MyVectorizedDataset('./my_datasets/meansum_summaries_trimmed.json')
     pegasus_dataset = MyVectorizedDataset('./my_datasets/pegasus_on_yelp_summaries.json')
+    wiki_dataset = MyVectorizedDataset('./my_datasets/wikitext.json')
 
     distances = []
     subject = word_to_vec('restaurant')
@@ -26,3 +27,10 @@ def calculate_relevance():
     file.write('\npegasus relevance: ' + str(avg))
     file.close()
 
+    for vector in wiki_dataset:
+        distance = np.linalg.norm(subject - vector.numpy())
+        distances.append(distance)
+    avg = (sum(distances) / len(distances))
+    file = open('./relevance_results.txt', 'a')
+    file.write('\nwiki relevance: ' + str(avg))
+    file.close()

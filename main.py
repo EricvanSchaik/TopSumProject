@@ -1,8 +1,7 @@
-from cmath import inf
-from distutils.log import info
+from multiprocessing.spawn import prepare
+from preprocessing import twittertext, wikitext, pegasus
+import information_estimator3, information_estimator2
 import relevance_calculator
-import information_estimator
 
 if __name__ == '__main__':
-    relevance_calculator.calculate_relevance()
-    # information_estimator.estimate_information()
+    information_estimator3.estimate_information()
