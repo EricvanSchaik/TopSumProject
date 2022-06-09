@@ -71,5 +71,5 @@ def estimate_information():
     file.write('\npegasus: ')
     file.close()
 
-    pegasus_path = os.path.join(os.getcwd(), 'my_datasets', 'pegasus_on_yelp_summaries.json')
+    pegasus_path = os.path.join(os.getcwd(), 'my_datasets', 'real_pegasus_summaries.json')
     test_rnn(wiki_rnn, MyInformationDataset(path_to_dataset=pegasus_path), MyInformationDataset(path_to_dataset=pegasus_path, labels=True))
