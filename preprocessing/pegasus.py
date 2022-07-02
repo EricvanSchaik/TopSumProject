@@ -39,4 +39,4 @@ def generate_summaries():
         inputs = tokenizer(document, truncation=True, max_length=1024, return_tensors='pt')
         summary_ids = model.generate(inputs['input_ids'])
         summaries.append([tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=False) for g in summary_ids][0])
-    df_to_json(pd.DataFrame(data={'text': summaries}), './my_datasets/real_pegasus_summaries.json')
+    df_to_json(pd.DataFrame(data={'text': summaries}), './datasets/pegasus_summaries.json')

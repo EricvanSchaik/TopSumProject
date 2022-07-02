@@ -9,4 +9,4 @@ conda activate researchTopics
 # conda install sentencepiece
 # conda install gensim
 
-conda install pytorch torchvision torchaudio cudatoolkit=11.3 transformers datasets sentencepiece gensim -c pytorch -c huggingface -c conda-forge
+conda install pytorch torchvision torchaudio cudatoolkit=11.3 transformers datasets sentencepiece gensim -c pytorch -c huggingface -c conda-forge jupyter

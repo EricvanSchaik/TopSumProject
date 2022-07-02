@@ -1,5 +1,5 @@
 from helpers.serialization import df_read_json
-from my_datasets.my_vectorized_dataset import MyVectorizedDataset
+from datasets.my_vectorized_dataset import MyVectorizedDataset
 import numpy as np
 from helpers.word_to_vec import word_to_vec
 
