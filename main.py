@@ -1,5 +1,5 @@
 from multiprocessing.spawn import prepare
-from metrics import information_estimator, relevance_calculator
+from metrics import information_estimator
 
 if __name__ == '__main__':
-    relevance_calculator.calculate_relevance()
+    pass
