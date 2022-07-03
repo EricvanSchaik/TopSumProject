@@ -1,7 +1,5 @@
 from multiprocessing.spawn import prepare
-import information_estimator2, information_estimator
-import relevance_calculator
-import coherence_calculator
+from metrics import information_estimator, relevance_calculator
 
 if __name__ == '__main__':
-    coherence_calculator.calculate_coherence()
+    relevance_calculator.calculate_relevance()

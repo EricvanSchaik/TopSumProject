@@ -1,8 +1,0 @@
-meansum relevance: 4.991386131476577
-pegasus relevance: 4.976711861534119
-meansum relevance: 4.991386131476577
-pegasus relevance: 4.976711861534119
-wiki relevance: 5.001238737854326
-meansum relevance: 4.991386131476577
-pegasus relevance: 4.976711861534119
-wiki relevance: 5.003673524794764
