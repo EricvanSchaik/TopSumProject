@@ -1,5 +1,5 @@
 from multiprocessing.spawn import prepare
-from metrics import information_estimator
+from preprocessing import yelp_sample
 
 if __name__ == '__main__':
-    pass
+    yelp_sample
