@@ -1,13 +1,8 @@
 import pandas as pd
-import transformers
 import os
 from datasets import load_dataset
 from transformers import PegasusForConditionalGeneration, PegasusTokenizer
-from zmq import device
 from helpers.serialization import df_to_json
-from transformers.pipelines.pt_utils import KeyDataset
-from tqdm.auto import tqdm
-import torch
 
 cache_directory = 'D:\\Users\\EricvanSchaik\\.cache\\'
 
@@ -15,10 +10,6 @@ os.environ["TRANSFORMERS_CACHE"] = cache_directory
 os.environ["HD_DATASETS_CACHE"] = cache_directory
 
 def save_xsum():
-    model_name = 'google/pegasus-xsum'
-    pegasus_tokenizer = PegasusTokenizer.from_pretrained(model_name)
-    pegasus_model = PegasusForConditionalGeneration.from_pretrained(model_name)
-    pegasus_pipeline = transformers.pipeline(task='summarization', model=pegasus_model, tokenizer=pegasus_tokenizer)
     dataset = load_dataset('xsum', split='train')
     xsum_df = pd.DataFrame(dataset[:1000])
     xsum_df.rename(columns={'document': 'text'}, inplace=True)
@@ -39,4 +30,4 @@ def generate_summaries():
         inputs = tokenizer(document, truncation=True, max_length=1024, return_tensors='pt')
         summary_ids = model.generate(inputs['input_ids'])
         summaries.append([tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=False) for g in summary_ids][0])
-    df_to_json(pd.DataFrame(data={'text': summaries}), './datasets/pegasus_summaries.json')
+    df_to_json(pd.DataFrame(data={'text': summaries}), './my_datasets/pegasus_summaries.json')

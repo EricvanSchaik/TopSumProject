@@ -1,5 +1,5 @@
 from multiprocessing.spawn import prepare
-from preprocessing import yelp_sample
+from preprocessing import amazon_sample
 
 if __name__ == '__main__':
-    yelp_sample
+    amazon_sample.sample_amazon()
