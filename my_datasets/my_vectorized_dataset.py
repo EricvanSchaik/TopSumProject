@@ -9,7 +9,7 @@ import torch
 
 class MyVectorizedDataset(Dataset):
 
-    def __init__(self, path_to_dataset) -> None:
+    def __init__(self, path_to_dataset: str) -> None:
         super().__init__()
         path_to_vectorized = path_to_dataset[:-5] + '_vectorized.json'
         self.training_vectors = []
