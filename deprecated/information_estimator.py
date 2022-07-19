@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.optim
 from torch.utils.data import DataLoader
-from my_datasets.my_information_dataset import MyInformationDataset
+from data.my_information_dataset import MyInformationDataset
 import os
 
 def estimate_information():

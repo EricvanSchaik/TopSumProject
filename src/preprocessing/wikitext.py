@@ -9,4 +9,4 @@ def generate_wikitext():
     wiki_df = wiki_df[wiki_df['text'] != ""]
     wiki_df = wiki_df.apply(lambda x: x.str.strip())
     wiki_df = wiki_df[~wiki_df.text.str.startswith('=')]
-    df_to_json(wiki_df, './my_datasets/wikitext.json')
+    df_to_json(wiki_df, '../../data/wikitext.json')

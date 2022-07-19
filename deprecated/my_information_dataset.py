@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-from my_datasets.my_vectorized_dataset import MyVectorizedDataset
+from data.my_vectorized_dataset import MyVectorizedDataset
 
 class MyInformationDataset(MyVectorizedDataset):
     

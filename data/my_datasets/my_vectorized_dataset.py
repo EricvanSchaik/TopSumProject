@@ -1,6 +1,6 @@
 from torch.utils.data import Dataset
-from helpers.preprocess_text import clean_text
-from helpers.serialization import df_read_json, df_to_json
+from src.helpers.preprocess_text import clean_text
+from src.helpers.serialization import df_read_json, df_to_json
 from os.path import exists
 import pandas as pd
 import gensim.downloader

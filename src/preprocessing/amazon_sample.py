@@ -37,4 +37,4 @@ def sort_amazon():
         result = pd.concat([result, part_df])
         result = result[result['product_id'].isin(relevant_products)]
     result = result.reset_index()
-    result.to_csv('./amazon_sorted/most_populair_products.csv', index=False)
+    result.to_csv('../../data/amazon_sorted/most_populair_products.csv', index=False)
