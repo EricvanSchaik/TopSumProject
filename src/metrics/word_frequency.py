@@ -3,7 +3,7 @@ import pandas as pd
 
 
 def count_words(path: str):
-    coca_df = pd.read_csv('../data/coca_freq.csv', index_col=0)
+    coca_df = pd.read_csv('./data/coca_freq.csv', index_col=0)
     coca_dict = coca_df.to_dict()['freq']
 
     summaries = df_read_json(path)
