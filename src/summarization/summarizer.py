@@ -15,5 +15,4 @@ def summarize(rankings, path_to_result: str):
         topic_summaries += '\n' + summarizer(full_text, max_length=130, min_length=30, do_sample=False)[0]['summary_text']
     final_summary = summarizer(topic_summaries, max_length=130, min_length=30, do_sample=False)[0]['summary_text']
     
-    topsum_path = '../data/topsum_summaries.json'
     df_to_json(pd.DataFrame(data={'text': [final_summary]}), path=path_to_result)

@@ -19,6 +19,6 @@ if __name__ == '__main__':
 
     rankings = rank_reviews(reviews=reviews, nr_topics=10, topic_model=topic_model, predictions=predictions)
 
-    topsum_path = './data/topsum_summaries.json'
+    topsum_path = './results/topsum_summaries.json'
     summarize(rankings=rankings, path_to_result=topsum_path)
     measure_summaries(topsum_path)
