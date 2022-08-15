@@ -3,6 +3,7 @@ from src.topic_modeling.bert_modeling import make_predictions
 from src.ranking.ranking import rank_reviews
 from src.summarization.summarizer import summarize
 from src.metrics.measure_summaries import measure_summaries
+from src.preprocessing.amazon_sample import sort_amazon
 
 ## This is only needed once
 # import nltk
@@ -10,6 +11,7 @@ from src.metrics.measure_summaries import measure_summaries
 # nltk.download()
 
 if __name__ == '__main__':
+    sort_amazon()
     amazon_df = pd.read_csv('./data/amazon_sorted/most_populair_products.csv')
     amazon_df = amazon_df.drop(columns='index').dropna().reset_index()
     product_df = amazon_df[amazon_df['product_id'] == amazon_df.iloc[0]['product_id']]
@@ -21,4 +23,4 @@ if __name__ == '__main__':
 
     topsum_path = './results/topsum_summaries.json'
     summarize(rankings=rankings, path_to_result=topsum_path)
-    measure_summaries(topsum_path)
+    measure_summaries(topsum_path, product_df['product_category'][0])

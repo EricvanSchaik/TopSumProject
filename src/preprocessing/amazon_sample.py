@@ -18,7 +18,7 @@ def sample_amazon():
 def sort_amazon():
     amazon_dataset = load_dataset('amazon_us_reviews', 'Electronics_v1_00', split='train')
     all_column_names = list(amazon_dataset.features.keys())
-    review_texts = amazon_dataset.remove_columns([c for c in all_column_names if c not in ['product_id', 'review_body']])
+    review_texts = amazon_dataset.remove_columns([c for c in all_column_names if c not in ['product_id', 'review_body', 'product_category']])
     review_texts = review_texts.sort('product_id')
     result = pd.DataFrame()
     freq_counts = pd.DataFrame()
@@ -37,4 +37,4 @@ def sort_amazon():
         result = pd.concat([result, part_df])
         result = result[result['product_id'].isin(relevant_products)]
     result = result.reset_index()
-    result.to_csv('../../data/amazon_sorted/most_populair_products.csv', index=False)
+    result.to_csv('./data/amazon_sorted/most_populair_products.csv', index=False)
