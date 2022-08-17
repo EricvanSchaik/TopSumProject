@@ -1,14 +1,15 @@
-from json import load
+# from json import load
 import pandas as pd
 from src.topic_modeling.bert_modeling import make_predictions
-from src.ranking.ranking import rank_reviews
-from src.summarization.summarizer import summarize
-from src.metrics.measure_summaries import measure_summaries
-from src.preprocessing.amazon_sample import sort_amazon
+# from src.ranking.ranking import rank_reviews
+# from src.summarization.summarizer import summarize
+# from src.metrics.measure_summaries import measure_summaries
+# from src.preprocessing.amazon_sample import sort_amazon
 from src.preprocessing.distilbart_on_amazon import summarize_amazon
-from src.preprocessing.pegasus_on_yelp import summarize_yelp
-from bertopic import BERTopic
-from src.helpers.bertopic_load_wrapper import load_model
+# from src.preprocessing.pegasus_on_yelp import summarize_yelp
+# from bertopic import BERTopic
+# from src.helpers.bertopic_load_wrapper import load_model
+import time
 
 ## This is only needed once
 # import nltk
@@ -16,17 +17,19 @@ from src.helpers.bertopic_load_wrapper import load_model
 # nltk.download()
 
 if __name__ == '__main__':
-    # summarize_amazon()
-    summarize_yelp()
-    # amazon_df = pd.read_csv('./data/amazon_sorted/most_populair_products.csv')
-    # amazon_df = amazon_df.drop(columns='index').dropna().reset_index()
-    # product_df = amazon_df[amazon_df['product_id'] == amazon_df.iloc[0]['product_id']]
+    start = time.time()
+    summarize_amazon()
+    # summarize_yelp()
+    amazon_df = pd.read_csv('./data/amazon_sorted/most_populair_products.csv')
+    amazon_df = amazon_df.drop(columns='index').dropna().reset_index()
+    product_df = amazon_df[amazon_df['product_id'] == amazon_df.iloc[0]['product_id']]
 
-    # reviews = amazon_df['review_body']
-    # topic_model_path = './results/topic_model_all_products'
+    reviews = product_df['review_body']
+    topic_model_path = './results/topic_model_first_product'
 
-    # topic_model, predictions = make_predictions(reviews)
-    # topic_model.save(topic_model_path)
+    topic_model, predictions = make_predictions(reviews)
+    topic_model.save(topic_model_path)
+    print(predictions)
 
     # topic_model = load_model(topic_model_path)
     # print(topic_model.get_topic_info())
@@ -36,3 +39,5 @@ if __name__ == '__main__':
     # topsum_path = './results/topsum_summaries.json'
     # summarize(rankings=rankings, path_to_result=topsum_path)
     # measure_summaries(topsum_path, product_df['product_category'][0])
+    end = time.time()
+    print('this script took ' + str(end-start) + ' seconds')
