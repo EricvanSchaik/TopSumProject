@@ -12,7 +12,6 @@ def summarize(rankings) -> str:
         full_text = ''
         for review in first_reviews:
             full_text += '\n' + review
-        print(len(full_text))
         topic_summaries += '\n' + summarizer(full_text, max_length=130, min_length=30, do_sample=False)[0]['summary_text']
     final_summary = summarizer(topic_summaries, max_length=130, min_length=30, do_sample=False)[0]['summary_text']
     

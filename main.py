@@ -5,6 +5,7 @@ from src.summarization.summarizer import summarize
 # from src.metrics.measure_summaries import measure_summaries
 import time
 from src.helpers.serialization import df_to_json
+import pickle
 
 ## This is only needed once
 # import nltk
@@ -26,15 +27,16 @@ if __name__ == '__main__':
     print('topic model and predictions generated')
 
     rankings_per_product = rank_reviews(amazon_df, nr_topics=nr_topics, topic_model=topic_model, all_products_predictions=predictions[1])
+    with open('./results/rankings', 'wb') as rankings_file:
+        pickle.dump(predictions, rankings_file)
     print('reviews_ranked')
 
-    # final_summaries = list()
-    # for ranking_per_topic in rankings_per_product:
-    #     final_summary = summarize(rankings=ranking_per_topic)
-    #     print(final_summary)
-    #     final_summaries.append(final_summary)
-    # topsum_path = './results/topsum_summaries.json'
-    # df_to_json(pd.DataFrame(data={'text': final_summaries}), path=topsum_path)
+    final_summaries = list()
+    for ranking_per_topic in rankings_per_product:
+        final_summary = summarize(rankings=ranking_per_topic)
+        final_summaries.append(final_summary)
+    topsum_path = './results/topsum_summaries.json'
+    df_to_json(pd.DataFrame(data={'text': final_summaries}), path=topsum_path)
     # measure_summaries(topsum_path, product_df['product_category'][0])
     end = time.time()
     print('this script took ' + str(end-start) + ' seconds')
