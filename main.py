@@ -1,11 +1,13 @@
 import time
 import pandas as pd
 import pickle
+import os
 from src.topic_modeling.bert_modeling import make_predictions
 from src.ranking.ranking import rank_reviews
 from src.summarization.summarizer import summarize
 from src.metrics.measure_summaries import measure_summaries
 from src.helpers.serialization import df_read_json, df_to_json
+from src.preprocessing.distilbart_on_amazon import summarize_amazon
 
 ## This is only needed once
 # import nltk
@@ -52,6 +54,8 @@ if __name__ == '__main__':
     results += measure_summaries(topsum_path)
 
     results += '\n distilbart measurements:\n'
+    if not os.path.exists('./data/distilbart_on_amazon_summaries.json'):
+        summarize_amazon()
     results += measure_summaries('./data/distilbart_on_amazon_summaries.json')
 
     results += '\n meansum measurements:\n'
