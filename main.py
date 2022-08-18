@@ -2,7 +2,7 @@ import pandas as pd
 from src.topic_modeling.bert_modeling import make_predictions
 from src.ranking.ranking import rank_reviews
 from src.summarization.summarizer import summarize
-# from src.metrics.measure_summaries import measure_summaries
+from src.metrics.measure_summaries import measure_summaries
 import time
 from src.helpers.serialization import df_to_json
 import pickle
@@ -26,9 +26,14 @@ if __name__ == '__main__':
     topic_model, predictions = make_predictions(reviews, topic_model_path, nr_topics)
     print('topic model and predictions generated')
 
-    rankings_per_product = rank_reviews(amazon_df, nr_topics=nr_topics, topic_model=topic_model, all_products_predictions=predictions[1])
-    with open('./results/rankings', 'wb') as rankings_file:
-        pickle.dump(predictions, rankings_file)
+    rankings_path = './results/rankings'
+    try:
+        with open(rankings_path, 'rb') as rankings_file:
+            rankings_per_product = pickle.load(rankings_file)
+    except FileNotFoundError:
+        rankings_per_product = rank_reviews(amazon_df, nr_topics=nr_topics, topic_model=topic_model, all_products_predictions=predictions[1])
+        with open(rankings_path, 'wb') as rankings_file:
+            pickle.dump(rankings_per_product, rankings_file)
     print('reviews_ranked')
 
     final_summaries = list()
@@ -37,6 +42,6 @@ if __name__ == '__main__':
         final_summaries.append(final_summary)
     topsum_path = './results/topsum_summaries.json'
     df_to_json(pd.DataFrame(data={'text': final_summaries}), path=topsum_path)
-    # measure_summaries(topsum_path, product_df['product_category'][0])
+    measure_summaries(topsum_path, amazon_df['product_category'][0])
     end = time.time()
     print('this script took ' + str(end-start) + ' seconds')
