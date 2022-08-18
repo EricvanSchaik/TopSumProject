@@ -4,7 +4,7 @@ from src.ranking.ranking import rank_reviews
 from src.summarization.summarizer import summarize
 from src.metrics.measure_summaries import measure_summaries
 import time
-from src.helpers.serialization import df_to_json
+from src.helpers.serialization import df_read_json, df_to_json
 import pickle
 
 ## This is only needed once
@@ -36,12 +36,16 @@ if __name__ == '__main__':
             pickle.dump(rankings_per_product, rankings_file)
     print('reviews_ranked')
 
-    final_summaries = list()
-    for ranking_per_topic in rankings_per_product:
-        final_summary = summarize(rankings=ranking_per_topic)
-        final_summaries.append(final_summary)
     topsum_path = './results/topsum_summaries.json'
-    df_to_json(pd.DataFrame(data={'text': final_summaries}), path=topsum_path)
+    try:
+        with open(topsum_path, 'rb') as topsum_file:
+            final_summaries = df_read_json(topsum_path)
+    except FileNotFoundError:
+        final_summaries = list()
+        for ranking_per_topic in rankings_per_product:
+            final_summary = summarize(rankings=ranking_per_topic)
+            final_summaries.append(final_summary)
+        df_to_json(pd.DataFrame(data={'text': final_summaries}), path=topsum_path)
     measure_summaries(topsum_path, amazon_df['product_category'][0])
     end = time.time()
     print('this script took ' + str(end-start) + ' seconds')
