@@ -12,29 +12,26 @@ class MyVectorizedDataset(Dataset):
     def __init__(self, path_to_dataset: str) -> None:
         super().__init__()
         path_to_vectorized = path_to_dataset[:-5] + '_vectorized.json'
-        self.training_vectors = []
+        self.review_vectors = []
         if (exists(path_to_vectorized)):
-            self.training_vectors = df_read_json(path_to_vectorized).to_numpy()
+            self.review_vectors = df_read_json(path_to_vectorized).to_numpy()
         else:
             self.dataset = pd.read_json(path_to_dataset, lines=True)
             self.glove_vectors = gensim.downloader.load('glove-twitter-25')
 
             for review in self.dataset['text'].tolist():
-                new_vectors = []
+                word_vectors = []
                 for word in review.split():
-                    if len(new_vectors) == 0:
-                        new_vectors = np.array([self.word_to_vec(word)])
+                    if len(word_vectors) == 0:
+                        word_vectors = np.array([self.word_to_vec(word)])
                     else:
-                        new_vectors = np.concatenate((new_vectors, np.array([self.word_to_vec(word)])))
-                if len(self.training_vectors) == 0:
-                    self.training_vectors = new_vectors
+                        word_vectors = np.concatenate((word_vectors, np.array([self.word_to_vec(word)])))
+                if len(self.review_vectors) == 0:
+                    self.review_vectors = [word_vectors]
                 else:
-                    self.training_vectors = np.concatenate((self.training_vectors, new_vectors))
+                    self.review_vectors.append([word_vectors])
 
-            df_to_json(pd.DataFrame(self.training_vectors), path_to_dataset[:-5] + '_vectorized.json')
-
-        self.data = torch.Tensor(self.training_vectors)
-
+            df_to_json(pd.DataFrame(self.review_vectors), path_to_dataset[:-5] + '_vectorized.json')
 
     def word_to_vec(self, word):
         word = clean_text(word)
@@ -44,7 +41,7 @@ class MyVectorizedDataset(Dataset):
             return np.array([0]*25)
 
     def __len__(self):
-        return len(self.data)
+        return len(self.review_vectors)
 
     def __getitem__(self, index):
-        return self.data[index]
+        return self.review_vectors[index]

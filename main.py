@@ -1,11 +1,11 @@
+import time
 import pandas as pd
+import pickle
 from src.topic_modeling.bert_modeling import make_predictions
 from src.ranking.ranking import rank_reviews
 from src.summarization.summarizer import summarize
 from src.metrics.measure_summaries import measure_summaries
-import time
 from src.helpers.serialization import df_read_json, df_to_json
-import pickle
 
 ## This is only needed once
 # import nltk
@@ -37,6 +37,7 @@ if __name__ == '__main__':
     print('reviews_ranked')
 
     topsum_path = './results/topsum_summaries.json'
+    product_category = amazon_df['product_category'][0]
     try:
         with open(topsum_path, 'rb') as topsum_file:
             final_summaries = df_read_json(topsum_path)
@@ -45,17 +46,16 @@ if __name__ == '__main__':
         for ranking_per_topic in rankings_per_product:
             final_summary = summarize(rankings=ranking_per_topic)
             final_summaries.append(final_summary)
-        df_to_json(pd.DataFrame(data={'text': final_summaries}), path=topsum_path)
+        df_to_json(pd.DataFrame(data={'text': final_summaries, 'product_category': product_category}), path=topsum_path)
     
-    results = 'topsum measurements: \n'
-    product_category = amazon_df['product_category'][0]
-    results += (measure_summaries(topsum_path, product_category=product_category))
+    results = 'topsum measurements:\n'
+    results += measure_summaries(topsum_path)
 
-    results += '\n distilbart measurements: \n'
-    results += (measure_summaries('./data/distilbart_on_amazon_summaries.json', product_category=product_category))
+    results += '\n distilbart measurements:\n'
+    results += measure_summaries('./data/distilbart_on_amazon_summaries.json')
 
-    results += '\n meansum measurements: \n'
-    results += (measure_summaries('./data/meansum_summaries_trimmed.json', product_category='Restaurants'))
+    results += '\n meansum measurements:\n'
+    results += measure_summaries('./data/meansum_summaries_trimmed.json')
     results_file = open('./results/measurements.txt', 'w')
     results_file.write(results)
     results_file.close()
