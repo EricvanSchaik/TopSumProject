@@ -46,6 +46,19 @@ if __name__ == '__main__':
             final_summary = summarize(rankings=ranking_per_topic)
             final_summaries.append(final_summary)
         df_to_json(pd.DataFrame(data={'text': final_summaries}), path=topsum_path)
-    measure_summaries(topsum_path, amazon_df['product_category'][0])
+    
+    results = 'topsum measurements: \n'
+    product_category = amazon_df['product_category'][0]
+    results += (measure_summaries(topsum_path, product_category=product_category))
+
+    results += '\n distilbart measurements: \n'
+    results += (measure_summaries('./data/distilbart_on_amazon_summaries.json', product_category=product_category))
+
+    results += '\n meansum measurements: \n'
+    results += (measure_summaries('./data/meansum_summaries_trimmed.json', product_category='Restaurants'))
+    results_file = open('./results/measurements.txt', 'w')
+    results_file.write(results)
+    results_file.close()
+
     end = time.time()
     print('this script took ' + str(end-start) + ' seconds')

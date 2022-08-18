@@ -1,0 +1,14 @@
+topsum measurements: 
+ 	next word prediction: {'correct': 5, 'total': 785, 'ratio': 0.006369426751592357}
+	average distance of word vector to topic: 5.071585086500569
+	aggregrated frequences of most frequent words: 4259750.270063695
+
+distilbart measurements: 
+	next word prediction: {'correct': 2, 'total': 699, 'ratio': 0.002861230329041488}
+	average distance of word vector to topic: 5.010726423734248
+	aggregrated frequences of most frequent words: 4530618.678111588
+
+meansum measurements: 
+	next word prediction: {'correct': 899, 'total': 5382, 'ratio': 0.1670382757339279}
+	average distance of word vector to topic: 5.601978744418592
+	aggregrated frequences of most frequent words: 5661428.605722779

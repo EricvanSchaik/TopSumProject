@@ -3,7 +3,7 @@ from data.my_datasets.my_vectorized_dataset import MyVectorizedDataset
 import numpy as np
 from src.helpers.word_to_vec import word_to_vec
 
-def calculate_relevance(path: str, product_category: str):
+def calculate_relevance(path: str, product_category: str) -> np.float64:
     dataset = MyVectorizedDataset(path)
     distances = []
     subject = word_to_vec(product_category)
