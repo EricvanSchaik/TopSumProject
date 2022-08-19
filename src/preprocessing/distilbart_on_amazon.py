@@ -1,4 +1,3 @@
-from readline import append_history_file
 from transformers import pipeline
 import pandas as pd
 from src.helpers.serialization import df_to_json
