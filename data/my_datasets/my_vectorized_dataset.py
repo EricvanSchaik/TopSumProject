@@ -27,7 +27,6 @@ class MyVectorizedDataset(Dataset):
                         self.review_vectors = [word_vectors]
                     else:
                         self.review_vectors += [word_vectors]
-            print(self.review_vectors)
             df_to_json(pd.DataFrame(self.review_vectors), path_to_dataset[:-5] + '_vectorized.json')
 
     def __len__(self):
