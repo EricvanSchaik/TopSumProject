@@ -4,7 +4,6 @@ from datasets import load_dataset
 import json
 import pandas as pd
 
-# sample_size = 100000
 sample_size = 10000
 
 def sample_amazon():

@@ -2,13 +2,15 @@ from os import truncate
 from transformers import pipeline
 from src.helpers.serialization import df_to_json
 import pandas as pd
+from math import ceil
 
 
 def summarize(rankings) -> str:
     summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6", truncation=True)
     topic_summaries = ''
+    retainment_ratio = 0.2
     for ranking in rankings:
-        first_reviews = ranking.head(100)['review']
+        first_reviews = ranking.head(len(ceil(ranking*retainment_ratio)))['review']
         full_text = ''
         for review in first_reviews:
             full_text += '\n' + review
