@@ -7,7 +7,7 @@ from ranking.helpers import get_avg_sents
 
 def rank_reviews(df: pd.DataFrame, nr_topics: int, topic_model: BERTopic, all_products_predictions) -> list:
     product_ids = df['product_id'].unique()
-    rankings_per_product = list()
+    ranking_per_product = list()
     for id in product_ids:
         reviews = df[df['product_id'] == id]
         review_texts = reviews['review_body']
@@ -54,5 +54,5 @@ def rank_reviews(df: pd.DataFrame, nr_topics: int, topic_model: BERTopic, all_pr
             ranking = ranking.sort_values(by=['score'], ascending=False)
             ranking.reset_index()
             ranking_per_topic.append(ranking)
-        rankings_per_product.append(ranking_per_topic)
-    return rankings_per_product
+        ranking_per_product.append(ranking_per_topic)
+    return ranking_per_product

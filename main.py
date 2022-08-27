@@ -33,10 +33,10 @@ if __name__ == '__main__':
         with open(rankings_path, 'rb') as rankings_file:
             rankings_per_product = pickle.load(rankings_file)
     except FileNotFoundError:
-        rankings_per_product = rank_reviews(amazon_df, nr_topics=nr_topics, topic_model=topic_model, all_products_predictions=predictions[1])
-    #     with open(rankings_path, 'wb') as rankings_file:
-    #         pickle.dump(rankings_per_product, rankings_file)
-    # print('reviews_ranked')
+        rankings_per_product = rank_reviews(amazon_df, nr_topics=nr_topics, topic_model=topic_model, all_reviews_predictions=predictions[1])
+        with open(rankings_path, 'wb') as rankings_file:
+            pickle.dump(rankings_per_product, rankings_file)
+    print('sentences_ranked')
 
     # topsum_path = './results/topsum_summaries.json'
     # product_category = amazon_df['product_category'][0]
