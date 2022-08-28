@@ -4,7 +4,7 @@ from datasets import load_dataset
 import json
 import pandas as pd
 
-sample_size = 10000
+sample_size = 1000
 
 def sample_amazon():
     amazon_dataset = load_dataset('amazon_us_reviews', 'Tools_v1_00', split='train')

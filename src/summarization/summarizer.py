@@ -10,11 +10,11 @@ def summarize(rankings) -> str:
     topic_summaries = ''
     retainment_ratio = 0.2
     for ranking in rankings:
-        first_reviews = ranking.head(len(ceil(ranking*retainment_ratio)))['review']
+        first_reviews = ranking.head(ceil(len(ranking)*retainment_ratio))['text']
         full_text = ''
         for review in first_reviews:
             full_text += '\n' + review
-        topic_summaries += '\n' + summarizer(full_text, max_length=130, min_length=30, do_sample=False)[0]['summary_text']
-    final_summary = summarizer(topic_summaries, max_length=130, min_length=30, do_sample=False)[0]['summary_text']
+        topic_summaries += '\n' + summarizer(full_text)[0]['summary_text']
+    final_summary = summarizer(topic_summaries)[0]['summary_text']
     
     return final_summary

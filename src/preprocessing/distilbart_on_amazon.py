@@ -16,7 +16,7 @@ def summarize_amazon():
         for review in product_reviews:
             full_text += '\n' + review
         review_summaries.append(summarizer(full_text)[0]['summary_text'])
-    results_df = pd.DataFrame.from_dict(summarizer(inputs=review_summaries))
+    results_df = pd.DataFrame.from_dict(summarizer(inputs=review_summaries, max_length=50))
     results_df.rename(columns={'summary_text': 'text'}, inplace=True)
     results_df['product_category'] = amazon_df['product_category'][0]
     df_to_json(results_df, os.path.join(os.getcwd(), 'data', 'distilbart_on_amazon_summaries.json'))

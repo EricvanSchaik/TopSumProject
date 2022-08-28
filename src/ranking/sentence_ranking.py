@@ -3,10 +3,9 @@ import numpy as np
 from bertopic import BERTopic
 from src.ranking.helpers import get_avg_sents
 from nltk.sentiment import SentimentIntensityAnalyzer
-import gensim.downloader
 
 
-def rank_reviews(df: pd.DataFrame, nr_topics: int, topic_model: BERTopic, all_reviews_predictions) -> list:
+def rank_reviews(df: pd.DataFrame, nr_topics: int, topic_model: BERTopic, all_reviews_predictions, w2v) -> list:
     product_ids = df['product_id'].unique()
     ranking_per_product = list()
     for id in product_ids:
@@ -28,8 +27,6 @@ def rank_reviews(df: pd.DataFrame, nr_topics: int, topic_model: BERTopic, all_re
                 deviation_per_topic.append(np.abs(compound - average_sents[topic]))
             deviations.append(deviation_per_topic)
 
-        w2v = gensim.downloader.load('word2vec-google-news-300')
-        
         avg_norms = list()
         for sentence in sentences:
             total_norm = 0
@@ -45,13 +42,13 @@ def rank_reviews(df: pd.DataFrame, nr_topics: int, topic_model: BERTopic, all_re
                 avg_norms.append(avg_norm)
             except ZeroDivisionError:
                 avg_norms.append(1)
-
+            
         ranking_per_topic = list()
         alpha = 0.1
         beta = 0.05
         predictions_per_sentence = topic_model.transform(sentences)[1]
         for topic in range(nr_topics):
-            ranking = pd.DataFrame(data={'sentence': sentences, 'relevance': np.transpose(predictions_per_sentence)[topic], 'sentiment_deviation': np.transpose(deviations)[topic], 'information': avg_norms})
+            ranking = pd.DataFrame(data={'text': sentences, 'relevance': np.transpose(predictions_per_sentence)[topic], 'sentiment_deviation': np.transpose(deviations)[topic], 'information': avg_norms})
             ranking_per_topic.append(ranking)
             ranking['score'] = ranking['relevance'] + alpha * \
                 ranking['sentiment_deviation'] + beta*ranking['information']

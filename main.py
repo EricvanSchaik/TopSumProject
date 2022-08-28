@@ -9,6 +9,8 @@ from src.summarization.summarizer import summarize
 from src.metrics.measure_summaries import measure_summaries
 from src.helpers.serialization import df_read_json, df_to_json
 from src.preprocessing.distilbart_on_amazon import summarize_amazon
+import gensim.downloader
+
 
 ## This is only needed once
 # import nltk
@@ -29,26 +31,27 @@ if __name__ == '__main__':
     print('topic model and predictions generated')
 
     rankings_path = './results/rankings'
+    w2v = gensim.downloader.load('word2vec-google-news-300')
     try:
         with open(rankings_path, 'rb') as rankings_file:
             rankings_per_product = pickle.load(rankings_file)
     except FileNotFoundError:
-        rankings_per_product = rank_reviews(amazon_df, nr_topics=nr_topics, topic_model=topic_model, all_reviews_predictions=predictions[1])
+        rankings_per_product = rank_reviews(amazon_df, nr_topics=nr_topics, topic_model=topic_model, all_reviews_predictions=predictions[1], w2v=w2v)
         with open(rankings_path, 'wb') as rankings_file:
             pickle.dump(rankings_per_product, rankings_file)
     print('sentences_ranked')
 
-    # topsum_path = './results/topsum_summaries.json'
-    # product_category = amazon_df['product_category'][0]
-    # try:
-    #     with open(topsum_path, 'rb') as topsum_file:
-    #         final_summaries = df_read_json(topsum_path)
-    # except FileNotFoundError:
-    #     final_summaries = list()
-    #     for ranking_per_topic in rankings_per_product:
-    #         final_summary = summarize(rankings=ranking_per_topic)
-    #         final_summaries.append(final_summary)
-    #     df_to_json(pd.DataFrame(data={'text': final_summaries, 'product_category': product_category}), path=topsum_path)
+    topsum_path = './results/topsum_summaries.json'
+    product_category = amazon_df['product_category'][0]
+    try:
+        with open(topsum_path, 'rb') as topsum_file:
+            final_summaries = df_read_json(topsum_path)
+    except FileNotFoundError:
+        final_summaries = list()
+        for ranking_per_topic in rankings_per_product:
+            final_summary = summarize(rankings=ranking_per_topic)
+            final_summaries.append(final_summary)
+        df_to_json(pd.DataFrame(data={'text': final_summaries, 'product_category': product_category}), path=topsum_path)
     
     # results = 'topsum measurements:\n'
     # results += measure_summaries(topsum_path)
