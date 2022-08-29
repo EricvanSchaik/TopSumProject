@@ -41,31 +41,29 @@ if __name__ == '__main__':
             pickle.dump(rankings_per_product, rankings_file)
     print('sentences_ranked')
 
+
     topsum_path = './results/topsum_summaries.json'
     product_category = amazon_df['product_category'][0]
     try:
         with open(topsum_path, 'rb') as topsum_file:
             final_summaries = df_read_json(topsum_path)
     except FileNotFoundError:
-        final_summaries = list()
-        for ranking_per_topic in rankings_per_product:
-            final_summary = summarize(rankings=ranking_per_topic)
-            final_summaries.append(final_summary)
+        final_summaries = summarize(rankings_per_product=rankings_per_product)
         df_to_json(pd.DataFrame(data={'text': final_summaries, 'product_category': product_category}), path=topsum_path)
     
-    # results = 'topsum measurements:\n'
-    # results += measure_summaries(topsum_path)
+    results = 'topsum measurements:\n'
+    results += measure_summaries(topsum_path, reviews_path)
 
-    # results += '\n distilbart measurements:\n'
-    # if not os.path.exists('./data/distilbart_on_amazon_summaries.json'):
-    #     summarize_amazon()
-    # results += measure_summaries('./data/distilbart_on_amazon_summaries.json')
+    results += '\n distilbart measurements:\n'
+    if not os.path.exists('./data/distilbart_on_amazon_summaries.json'):
+        summarize_amazon()
+    results += measure_summaries('./data/distilbart_on_amazon_summaries.json', reviews_path)
 
-    # results += '\n meansum measurements:\n'
-    # results += measure_summaries('./data/meansum_summaries_trimmed.json')
-    # results_file = open('./results/measurements.txt', 'w')
-    # results_file.write(results)
-    # results_file.close()
+    results += '\n meansum measurements:\n'
+    results += measure_summaries('./data/meansum_summaries_trimmed.json', '')
+    results_file = open('./results/measurements.txt', 'w')
+    results_file.write(results)
+    results_file.close()
 
     end = time.time()
     print('this script took ' + str(end-start) + ' seconds')
