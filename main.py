@@ -20,47 +20,38 @@ import gensim.downloader
 if __name__ == '__main__':
     start = time.time()
 
-    reviews_path = './data/amazon_sorted/products_8_reviews.csv'
-    amazon_df = pd.read_csv(reviews_path)
-    reviews = amazon_df['review_body']
+    reviews_path = './data/amazon_sorted/products_8_reviews.json'
     
     topic_model_path = './results/topic_model_all_products'
+
     nr_topics = 10
 
-    topic_model, predictions = make_predictions(reviews, topic_model_path, nr_topics)
+    topic_model, predictions = make_predictions(reviews_path, topic_model_path, nr_topics=nr_topics)
     print('topic model and predictions generated')
 
     rankings_path = './results/rankings'
     w2v = gensim.downloader.load('word2vec-google-news-300')
-    try:
-        with open(rankings_path, 'rb') as rankings_file:
-            rankings_per_product = pickle.load(rankings_file)
-    except FileNotFoundError:
-        rankings_per_product = rank_reviews(amazon_df, nr_topics=nr_topics, topic_model=topic_model, all_reviews_predictions=predictions[1], w2v=w2v)
-        with open(rankings_path, 'wb') as rankings_file:
-            pickle.dump(rankings_per_product, rankings_file)
-    print('sentences_ranked')
-
+    rankings_per_product = rank_reviews(results_path=rankings_path, reviews_path=reviews_path, nr_topics=nr_topics, topic_model=topic_model, all_reviews_predictions=predictions[1], w2v=w2v)
+    print('sentences ranked')
 
     topsum_path = './results/topsum_summaries.json'
-    product_category = amazon_df['product_category'][0]
-    try:
-        with open(topsum_path, 'rb') as topsum_file:
-            final_summaries = df_read_json(topsum_path)
-    except FileNotFoundError:
-        final_summaries = summarize(rankings_per_product=rankings_per_product)
-        df_to_json(pd.DataFrame(data={'text': final_summaries, 'product_category': product_category}), path=topsum_path)
-    
+    final_summaries = summarize(reviews_path, rankings_per_product=rankings_per_product, results_path=topsum_path)
+    print('summaries generated')
+
     results = 'topsum measurements:\n'
+    print('measuring topsum')
     results += measure_summaries(topsum_path, reviews_path)
 
     results += '\n distilbart measurements:\n'
     if not os.path.exists('./data/distilbart_on_amazon_summaries.json'):
         summarize_amazon()
+    print('measuring distilbart')
     results += measure_summaries('./data/distilbart_on_amazon_summaries.json', reviews_path)
 
+    print('measuring meansum')
     results += '\n meansum measurements:\n'
-    results += measure_summaries('./data/meansum_summaries_trimmed.json', '')
+    results += measure_summaries('./data/meansum_summaries_trimmed.json', './data/meansum_reviews.json')
+    print(results)
     results_file = open('./results/measurements.txt', 'w')
     results_file.write(results)
     results_file.close()

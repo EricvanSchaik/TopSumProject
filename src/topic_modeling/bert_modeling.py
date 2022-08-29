@@ -3,8 +3,12 @@ from typing import Tuple
 import pandas as pd
 import pickle
 
+from src.helpers.serialization import df_read_json
 
-def make_predictions(reviews, topic_model_path: str, nr_topics) -> Tuple[BERTopic, tuple]:
+
+def make_predictions(reviews_path, topic_model_path: str, nr_topics) -> Tuple[BERTopic, tuple]:
+    amazon_df = df_read_json(reviews_path)
+    reviews = amazon_df['review_body']
     try:
         topic_model = BERTopic.load(topic_model_path)
         with open(topic_model_path + '_predictions', 'rb') as predictions_file:

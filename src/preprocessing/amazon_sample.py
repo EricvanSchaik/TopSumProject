@@ -3,8 +3,9 @@ from re import sub
 from datasets import load_dataset
 import json
 import pandas as pd
+from src.helpers.serialization import df_to_json
 
-sample_size = 1000
+sample_size = 300
 
 def sample_amazon():
     amazon_dataset = load_dataset('amazon_us_reviews', 'Tools_v1_00', split='train')
@@ -45,7 +46,7 @@ def sort_amazon():
 def get_n_reviews(n: int):
     amazon_dataset = load_dataset('amazon_us_reviews', 'Electronics_v1_00', split='train')
     all_column_names = list(amazon_dataset.features.keys())
-    useful_column_names = ['product_id', 'review_body', 'product_category']
+    useful_column_names = ['product_id', 'product_category', 'review_body']
     amazon_dataset = amazon_dataset.remove_columns([c for c in all_column_names if c not in useful_column_names])
     amazon_dataset = amazon_dataset.sort('product_id')
     result = pd.DataFrame(columns=useful_column_names)
@@ -55,4 +56,4 @@ def get_n_reviews(n: int):
             result = pd.concat([result, pd.DataFrame.from_dict(amazon_dataset[index:index+n])])
         if len(result) > sample_size:
             break
-    result.to_csv('./data/amazon_sorted/products_' + str(n) + '_reviews.csv', index=False)
+    df_to_json(result, './data/amazon_sorted/products_' + str(n) + '_reviews.json')
