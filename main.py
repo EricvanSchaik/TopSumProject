@@ -48,10 +48,10 @@ if __name__ == '__main__':
     print('measuring distilbart')
     results += measure_summaries('./data/distilbart_on_amazon_summaries.json', reviews_path)
 
-    print('measuring meansum')
-    results += '\n meansum measurements:\n'
-    results += measure_summaries('./data/meansum_summaries_trimmed.json', './data/meansum_reviews.json')
-    print(results)
+    # print('measuring meansum')
+    # results += '\n meansum measurements:\n'
+    # results += measure_summaries('./data/meansum_summaries_trimmed.json', './data/meansum_reviews.json')
+    # print(results)
     results_file = open('./results/measurements.txt', 'w')
     results_file.write(results)
     results_file.close()

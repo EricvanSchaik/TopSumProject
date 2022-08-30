@@ -1,11 +1,11 @@
 from transformers import pipeline
 import pandas as pd
-from src.helpers.serialization import df_to_json
+from src.helpers.serialization import df_to_json, df_read_json
 import os
 
 def summarize_amazon():
     summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6", truncation=True)
-    amazon_df = pd.read_csv('./data/amazon_sorted/products_8_reviews.csv')
+    amazon_df = df_read_json('./data/amazon_sorted/products_8_reviews.json')
     amazon_df = amazon_df.dropna().reset_index()
     product_ids = amazon_df['product_id'].unique()
     review_summaries = list()

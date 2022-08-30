@@ -25,11 +25,11 @@ def summarize(reviews_path, rankings_per_product, results_path: str) -> list:
                 for review in first_reviews:
                     full_text += '\n' + review
             full_texts.append(full_text)
-            product_ids.append(rankings_per_topic[0]['product_id'])
+            product_ids.append(rankings_per_topic[0]['product_id'][0])
         final_summaries = summarizer(full_texts)
         result = list()
         for summary_dict in final_summaries:
             result.append(summary_dict['summary_text'])
         
-        df_to_json(pd.DataFrame(data={'product_id': product_ids, 'text': final_summaries, 'product_category': product_category}), path=results_path)
+        df_to_json(pd.DataFrame(data={'product_id': product_ids, 'text': result, 'product_category': product_category}), path=results_path)
     return result

@@ -17,10 +17,10 @@ def test_summaries(path) -> dict:
     model_name = "allenai/t5-small-next-word-generator-qoogle"
     tokenizer = T5Tokenizer.from_pretrained(model_name)
     model = T5ForConditionalGeneration.from_pretrained(model_name)
-    meansum = df_read_json(path)
+    summaries = df_read_json(path)
     correct = 0
     total = 0
-    for review in meansum['text']:
+    for review in summaries['text']:
         processed = ''
         for word in review.split():
             processed += word + ' '
