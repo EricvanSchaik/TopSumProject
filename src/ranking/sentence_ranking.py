@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from bertopic import BERTopic
 from src.ranking.helpers import get_avg_sents
+from src.helpers.serialization import df_read_json
 from nltk.sentiment import SentimentIntensityAnalyzer
 import pickle
 
@@ -10,7 +11,7 @@ def rank_reviews(results_path, reviews_path, nr_topics: int, topic_model: BERTop
         with open(results_path, 'rb') as rankings_file:
             rankings_per_product = pickle.load(rankings_file)
     except FileNotFoundError:
-        amazon_df = pd.read_csv(reviews_path)
+        amazon_df = df_read_json(reviews_path)
         product_ids = amazon_df['product_id'].unique()
         rankings_per_product = list()
         for id in product_ids:
