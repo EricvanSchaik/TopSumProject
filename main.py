@@ -39,19 +39,19 @@ if __name__ == '__main__':
     # print('summaries generated')
 
     results = 'topsum measurements:\n'
-    print('measuring topsum')
+    # print('measuring topsum')
     results += measure_summaries(topsum_path, reviews_path)
 
     # results += '\n distilbart measurements:\n'
     # if not os.path.exists('./data/distilbart_on_amazon_summaries.json'):
     #     summarize_amazon()
     # print('measuring distilbart')
-    # results += measure_summaries('./data/distilbart_on_amazon_summaries.json', reviews_path)
+    results += measure_summaries('./data/distilbart_on_amazon_summaries.json', reviews_path)
 
     # print('measuring coop')
     # results += '\n coop measurements:\n'
-    # results += measure_summaries('./data/coop_summaries.json', reviews_path)
-    # print(results)
+    results += measure_summaries('./data/coop_summaries.json', reviews_path)
+    print(results)
     # results_file = open('./results/measurements.txt', 'w')
     # results_file.write(results)
     # results_file.close()
