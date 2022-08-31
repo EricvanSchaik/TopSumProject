@@ -50,16 +50,16 @@ def rank_reviews(results_path, reviews_path, nr_topics: int, topic_model: BERTop
                     avg_norms.append(1)
                 
             ranking_per_topic = list()
-            alpha = 0.1
+            alpha = -0.1
             beta = 0.05
             predictions_per_sentence = topic_model.transform(sentences)[1]
             for topic in range(nr_topics):
                 ranking = pd.DataFrame(data={'product_id': id, 'text': sentences, 'relevance': np.transpose(predictions_per_sentence)[topic], 'sentiment_deviation': np.transpose(deviations)[topic], 'information': avg_norms})
-                ranking_per_topic.append(ranking)
                 ranking['score'] = ranking['relevance'] + alpha * \
                     ranking['sentiment_deviation'] + beta*ranking['information']
                 ranking = ranking.sort_values(by=['score'], ascending=False)
                 ranking.reset_index()
+                ranking_per_topic.append(ranking)
             rankings_per_product.append(ranking_per_topic)
         with open(results_path, 'wb') as rankings_file:
             pickle.dump(rankings_per_product, rankings_file)
