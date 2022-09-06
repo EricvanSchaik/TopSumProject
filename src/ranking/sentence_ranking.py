@@ -6,7 +6,8 @@ from src.helpers.serialization import df_read_json
 from nltk.sentiment import SentimentIntensityAnalyzer
 import pickle
 
-def rank_reviews(results_path, reviews_path, nr_topics: int, topic_model: BERTopic, all_reviews_predictions, w2v) -> list:
+def rank_reviews(results_path, reviews_path, topic_model: BERTopic, all_reviews_predictions, w2v) -> list:
+    nr_topics = len(topic_model.get_topic_info())-1
     try:
         with open(results_path, 'rb') as rankings_file:
             rankings_per_product = pickle.load(rankings_file)

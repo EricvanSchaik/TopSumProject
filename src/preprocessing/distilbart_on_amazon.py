@@ -3,9 +3,9 @@ import pandas as pd
 from src.helpers.serialization import df_to_json, df_read_json
 import os
 
-def summarize_amazon():
+def summarize_amazon(distilbart_path: str, reviews_path: str):
     summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6", truncation=True)
-    amazon_df = df_read_json('./data/amazon_sorted/products_8_reviews.json')
+    amazon_df = df_read_json(reviews_path)
     amazon_df = amazon_df.dropna().reset_index()
     product_ids = amazon_df['product_id'].unique()
     review_summaries = list()
@@ -20,4 +20,4 @@ def summarize_amazon():
     results_df.rename(columns={'summary_text': 'text'}, inplace=True)
     results_df['product_category'] = amazon_df['product_category'][0]
     results_df['product_id'] = product_ids
-    df_to_json(results_df, os.path.join(os.getcwd(), 'data', 'distilbart_on_amazon_summaries.json'))
+    df_to_json(results_df, distilbart_path)

@@ -9,6 +9,7 @@ from src.summarization.summarizer import summarize
 from src.metrics.measure_summaries import measure_summaries
 from src.helpers.serialization import df_read_json, df_to_json
 from src.preprocessing.distilbart_on_amazon import summarize_amazon
+from src.preprocessing.yelp_sample import sample_yelp
 import gensim.downloader
 
 
@@ -20,21 +21,23 @@ import gensim.downloader
 if __name__ == '__main__':
     start = time.time()
 
-    reviews_path = './data/amazon_sorted/products_8_reviews.json'
+    dataset = 'yelp'
+
+    reviews_path = './data/' + dataset + '_sorted/products_8_reviews.json'
     
-    topic_model_path = './results/topic_model_all_products'
+    topic_model_path = './results/' + dataset + '/topic_model_all_products'
 
     nr_topics = 10
 
     topic_model, predictions = make_predictions(reviews_path, topic_model_path, nr_topics=nr_topics)
     print('topic model and predictions generated')
 
-    rankings_path = './results/rankings'
+    rankings_path = './results/' + dataset + '/rankings'
     w2v = gensim.downloader.load('word2vec-google-news-300')
-    rankings_per_product = rank_reviews(results_path=rankings_path, reviews_path=reviews_path, nr_topics=nr_topics, topic_model=topic_model, all_reviews_predictions=predictions[1], w2v=w2v)
+    rankings_per_product = rank_reviews(results_path=rankings_path, reviews_path=reviews_path, topic_model=topic_model, all_reviews_predictions=predictions[1], w2v=w2v)
     print('sentences ranked')
 
-    topsum_path = './results/topsum_summaries.json'
+    topsum_path = './results/' + dataset + '/topsum_summaries.json'
     final_summaries = summarize(reviews_path, rankings_per_product=rankings_per_product, results_path=topsum_path)
     print('summaries generated')
 
@@ -43,16 +46,17 @@ if __name__ == '__main__':
     results += measure_summaries(topsum_path, reviews_path)
 
     results += '\n distilbart measurements:\n'
-    if not os.path.exists('./data/distilbart_on_amazon_summaries.json'):
-        summarize_amazon()
+    distilbart_path = './data/distilbart_on_' + dataset + '_summaries.json'
+    if not os.path.exists(distilbart_path):
+        summarize_amazon(distilbart_path, reviews_path)
     print('measuring distilbart')
-    results += measure_summaries('./data/distilbart_on_amazon_summaries.json', reviews_path)
+    results += measure_summaries(distilbart_path, reviews_path)
 
     print('measuring coop')
     results += '\n coop measurements:\n'
-    results += measure_summaries('./data/coop_summaries.json', reviews_path)
+    results += measure_summaries('./data/coop_on_' + dataset + '_summaries.json', reviews_path)
     print(results)
-    results_file = open('./results/measurements.txt', 'w')
+    results_file = open('./results/' + dataset + '/measurements.txt', 'w')
     results_file.write(results)
     results_file.close()
 
