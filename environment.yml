@@ -1,5 +1,6 @@
 name: researchTopics
 channels:
+  - pytorch
   - conda-forge
   - defaults
 dependencies:
@@ -14,5 +15,4 @@ dependencies:
   - gensim
   - jupyter
   - sentencepiece
-  - rouge
 prefix: /home/eric/miniconda3/envs/researchTopics
