@@ -5,7 +5,7 @@ import json
 import pandas as pd
 from src.helpers.serialization import df_to_json
 
-sample_size = 300
+sample_size = 10000
 
 def sample_amazon():
     amazon_dataset = load_dataset('amazon_us_reviews', 'Tools_v1_00', split='train')
@@ -56,4 +56,4 @@ def get_n_reviews(n: int):
             result = pd.concat([result, pd.DataFrame.from_dict(amazon_dataset[index:index+n])])
         if len(result) > sample_size:
             break
-    df_to_json(result, './data/amazon_sorted/products_' + str(n) + '_reviews.json')
+    df_to_json(result, './data/sorted_amazon/products_' + str(n) + '_reviews.json')
