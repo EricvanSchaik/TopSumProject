@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
     dataset = 'yelp'
 
-    reviews_path = './data/' + dataset + '_sorted/products_8_reviews.json'
+    reviews_path = './data/sorted_' + dataset + '/products_8_reviews.json'
     
     topic_model_path = './results/' + dataset + '/topic_model_all_products'
 
@@ -46,7 +46,7 @@ if __name__ == '__main__':
     results += measure_summaries(topsum_path, reviews_path)
 
     results += '\n distilbart measurements:\n'
-    distilbart_path = './data/distilbart_on_' + dataset + '_summaries.json'
+    distilbart_path = './data/distilbart/distilbart_on_' + dataset + '_summaries.json'
     if not os.path.exists(distilbart_path):
         summarize_amazon(distilbart_path, reviews_path)
     print('measuring distilbart')
@@ -54,7 +54,7 @@ if __name__ == '__main__':
 
     print('measuring coop')
     results += '\n coop measurements:\n'
-    results += measure_summaries('./data/coop_on_' + dataset + '_summaries.json', reviews_path)
+    results += measure_summaries('./data/coop/coop_on_' + dataset + '_summaries.json', reviews_path)
     print(results)
     results_file = open('./results/' + dataset + '/measurements.txt', 'w')
     results_file.write(results)

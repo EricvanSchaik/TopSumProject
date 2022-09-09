@@ -12,6 +12,6 @@ topsum measurements:
 
  coop measurements:
 	 next word prediction: {'correct': 1272, 'total': 4460, 'ratio': 0.2852017937219731}
-	 average distance of word vector to topic: 6.457733637276534
+	 average distance of word vector to topic: 6.4577336372818595
 	 aggregrated frequences of most frequent words: 7121872.603139013
 	 sentiment deviation: 0.26043532608695646
