@@ -1,5 +1,8 @@
 name: researchTopics
 channels:
+  - conda-forge
+  - huggingface
+  - pytorch
   - defaults
 dependencies:
   - wincertstore==0.2=py38haa95532_2
