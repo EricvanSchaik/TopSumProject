@@ -15,4 +15,4 @@ class WordToVec():
         if word in self.glove_vectors:
             return self.glove_vectors[word]
         else:
-            return np.array([0]*25)
+            return np.array([0]*300)
