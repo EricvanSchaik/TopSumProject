@@ -4,7 +4,7 @@ topsum measurements:
 	 aggregrated frequences of most frequent words: 4405222.99070545
 	 sentiment deviation: 0.45659470423661025
 
- distilbart measurements:
+ textsum measurements:
 	 next word prediction: {'correct': 73, 'total': 50236, 'ratio': 0.0014531411736603233}
 	 average distance of word vector to topic: 5.110552816105312
 	 aggregrated frequences of most frequent words: 4235490.559757942
