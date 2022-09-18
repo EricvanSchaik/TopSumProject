@@ -16,7 +16,7 @@ import gensim.downloader
 if __name__ == '__main__':
     start = time.time()
 
-    dataset = 'amazon'
+    dataset = 'yelp'
 
     reviews_path = './data/sorted_' + dataset + '/products_8_reviews.json'
     
