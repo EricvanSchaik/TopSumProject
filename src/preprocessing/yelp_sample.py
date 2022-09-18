@@ -20,4 +20,4 @@ def sample_yelp():
     review_dataset['product_category'] = review_dataset['product_category'].apply(lambda x: x.split(',')[0])
     review_dataset['product_category'] = review_dataset['product_category'].apply(lambda x: x.split()[0])
 
-    df_to_json(review_dataset, './data/yelp_sorted/products_8_reviews.json')
+    df_to_json(review_dataset, './data/sorted_yelp/products_8_reviews.json')
