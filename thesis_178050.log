@@ -1,0 +1,21 @@
+	Adding nVidia Cuda Toolkit 11.3
+	Adding nVidia cuDNN 8.2 (.1.32)
+gpu devices: 0,1
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+topic model and predictions generated
+sentences ranked
+summaries generated
+measuring topsum
+next word prediction
+relevance calculation
+Traceback (most recent call last):
+  File "main.py", line 41, in <module>
+    results += measure_summaries(topsum_path, reviews_path)
+  File "/home/s1721380/researchTopics/src/metrics/measure_summaries.py", line 11, in measure_summaries
+    results += ('\t average distance of word vector to topic: ' + str(calculate_relevance(summaries_path)) + '\n')
+  File "/home/s1721380/researchTopics/src/metrics/relevance_calculator.py", line 17, in calculate_relevance
+    distance = np.linalg.norm(subject - np.array(word_vector))
+ValueError: operands could not be broadcast together with shapes (300,) (25,) 
