@@ -12,7 +12,7 @@ def summarize(reviews_path, rankings_per_product, results_path: str) -> list:
         amazon_df = df_read_json(reviews_path)
         product_category = amazon_df['product_category'][0]
         
-        summarizer = pipeline("summarization", truncation=True)
+        summarizer = pipeline("summarization", model="google/pegasus-cnn_dailymail", truncation=True) 
         retainment_ratio = 0.2
         full_texts = list()
         product_ids = list()
