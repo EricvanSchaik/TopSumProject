@@ -26,19 +26,23 @@ if __name__ == '__main__':
 
     topic_model, predictions = make_predictions(reviews_path, topic_model_path, nr_topics=nr_topics)
     print('topic model and predictions generated')
+    print(time.time() - start)
 
     rankings_path = './results/' + dataset + '/rankings'
     w2v = gensim.downloader.load('word2vec-google-news-300')
     rankings_per_product = rank_reviews(results_path=rankings_path, reviews_path=reviews_path, topic_model=topic_model, all_reviews_predictions=predictions[1], w2v=w2v)
     print('sentences ranked')
+    print(time.time() - start)
 
     topsum_path = './results/' + dataset + '/topsum_summaries.json'
     final_summaries = summarize(reviews_path, rankings_per_product=rankings_per_product, results_path=topsum_path)
     print('summaries generated')
+    print(time.time() - start)
 
     results = 'topsum measurements:\n'
     print('measuring topsum')
     results += measure_summaries(topsum_path, reviews_path)
+    print(time.time() - start)
 
     results += '\n textsum measurements:\n'
 
@@ -47,10 +51,12 @@ if __name__ == '__main__':
         summarize_reviews(textsum_path, reviews_path)
     print('measuring textsum')
     results += measure_summaries(textsum_path, reviews_path)
+    print(time.time() - start)
 
     print('measuring coop')
     results += '\n coop measurements:\n'
     results += measure_summaries('./data/coop/coop_on_' + dataset + '_summaries.json', reviews_path)
+    print(time.time() - start)
     print(results)
     results_file = open('./results/' + dataset + '/measurements.txt', 'w')
     results_file.write(results)
