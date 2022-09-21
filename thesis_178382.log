@@ -14,4 +14,4 @@ Traceback (most recent call last):
     results += ('\t average distance of word vector to topic: ' + str(calculate_relevance(summaries_path)) + '\n')
   File "/home/s1721380/researchTopics/src/metrics/relevance_calculator.py", line 17, in calculate_relevance
     distance = np.linalg.norm(subject - np.array(word_vector))
-ValueError: operands could not be broadcast together with shapes (300,) (25,) 
+ValueError: operands could not be broadcast together with shapes (25,) (300,) 

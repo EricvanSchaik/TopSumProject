@@ -1,0 +1,4 @@
+	Adding nVidia Cuda Toolkit 11.3
+	Adding nVidia cuDNN 8.2 (.1.32)
+gpu devices: 0,1
+slurmstepd-ctit082: error: *** JOB 178149 ON ctit082 CANCELLED AT 2022-09-21T10:16:12 ***
