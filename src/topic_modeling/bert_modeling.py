@@ -13,7 +13,7 @@ def make_predictions(reviews_path, topic_model_path: str, nr_topics) -> Tuple[BE
         topic_model = BERTopic.load(topic_model_path)
         with open(topic_model_path + '_predictions', 'rb') as predictions_file:
             predictions = pickle.load(predictions_file)
-    except FileNotFoundError:
+    except (FileNotFoundError, RuntimeError):
         topic_model = BERTopic(nr_topics=nr_topics, calculate_probabilities=True)
         predictions = topic_model.fit_transform(reviews)
         topic_model.save(topic_model_path)

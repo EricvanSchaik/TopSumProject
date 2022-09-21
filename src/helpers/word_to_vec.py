@@ -5,7 +5,7 @@ import string
 class WordToVec():
 
     def __init__(self) -> None:
-        self.glove_vectors = gensim.downloader.load('glove-twitter-25')
+        self.glove_vectors = gensim.downloader.load('word2vec-google-news-300')
 
     def clean_text(self, text: str) -> str:
         return text.translate(str.maketrans('', '', string.punctuation)).lower()
