@@ -9,8 +9,7 @@ def summarize(reviews_path, rankings_per_product, results_path: str) -> list:
     try:
         result = df_read_json(results_path)
     except ValueError:
-        amazon_df = df_read_json(reviews_path)
-        product_category = amazon_df['product_category'][0]
+        product_categories = list()
         
         summarizer = pipeline("summarization", model="google/pegasus-cnn_dailymail", truncation=True) 
         retainment_ratio = 0.2
@@ -26,10 +25,11 @@ def summarize(reviews_path, rankings_per_product, results_path: str) -> list:
                     full_text += '\n' + review
             full_texts.append(full_text)
             product_ids.append(rankings_per_topic[0]['product_id'][0])
+            product_categories.append(rankings_per_topic[0]['product_category'][0])
         final_summaries = summarizer(full_texts)
         result = list()
         for summary_dict in final_summaries:
             result.append(summary_dict['summary_text'])
         
-        df_to_json(pd.DataFrame(data={'product_id': product_ids, 'text': result, 'product_category': product_category}), path=results_path)
+        df_to_json(pd.DataFrame(data={'product_id': product_ids, 'text': result, 'product_category': product_categories}), path=results_path)
     return result

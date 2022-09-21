@@ -35,7 +35,7 @@ if __name__ == '__main__':
     print(time.time() - start)
 
     topsum_path = './results/' + dataset + '/topsum_summaries.json'
-    final_summaries = summarize(reviews_path, rankings_per_product=rankings_per_product, results_path=topsum_path)
+    final_summaries = summarize(rankings_per_product=rankings_per_product, results_path=topsum_path)
     print('summaries generated')
     print(time.time() - start)
 
