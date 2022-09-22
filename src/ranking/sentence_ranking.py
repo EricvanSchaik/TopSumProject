@@ -1,12 +1,13 @@
 import pandas as pd
 import numpy as np
 from bertopic import BERTopic
+from src.helpers.word_to_vec import WordToVec
 from src.ranking.helpers import get_avg_sents
 from src.helpers.serialization import df_read_json
 from nltk.sentiment import SentimentIntensityAnalyzer
 import pickle
 
-def rank_reviews(results_path, reviews_path, topic_model: BERTopic, all_reviews_predictions, w2v) -> list:
+def rank_reviews(results_path, reviews_path, topic_model: BERTopic, all_reviews_predictions, w2v: WordToVec) -> list:
     nr_topics = len(topic_model.get_topic_info())-1
     try:
         with open(results_path, 'rb') as rankings_file:
@@ -17,8 +18,8 @@ def rank_reviews(results_path, reviews_path, topic_model: BERTopic, all_reviews_
         rankings_per_product = list()
         for id in product_ids:
             reviews = amazon_df[amazon_df['product_id'] == id]
+            reviews.reset_index(inplace=True)
             product_category = reviews['product_category'][0]
-            print(product_category)
             review_texts = reviews['review_body']
             sentences = list()
             for sentence in review_texts:
@@ -42,7 +43,7 @@ def rank_reviews(results_path, reviews_path, topic_model: BERTopic, all_reviews_
                 valid_words = 0
                 for word in sentence.split():
                     try:
-                        total_norm += np.linalg.norm(w2v[word])
+                        total_norm += np.linalg.norm(w2v.word_to_vec(word))
                         valid_words += 1
                     except KeyError:
                         continue

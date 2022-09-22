@@ -5,7 +5,7 @@ import pandas as pd
 from math import ceil
 
 
-def summarize(reviews_path, rankings_per_product, results_path: str) -> list:
+def summarize(rankings_per_product, results_path: str) -> list:
     try:
         result = df_read_json(results_path)
     except ValueError:
