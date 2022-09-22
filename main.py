@@ -1,5 +1,7 @@
 import time
 import os
+from src.helpers.word_to_vec import WordToVec
+from src.preprocessing.get_small_dataset import get_small_dataset
 from src.topic_modeling.bert_modeling import make_predictions
 from src.ranking.sentence_ranking import rank_reviews
 from src.summarization.summarizer import summarize
@@ -29,7 +31,8 @@ if __name__ == '__main__':
     print(time.time() - start)
 
     rankings_path = './results/' + dataset + '/rankings'
-    w2v = gensim.downloader.load('word2vec-google-news-300')
+    w2v = WordToVec()
+    print(time.time() - start)
     rankings_per_product = rank_reviews(results_path=rankings_path, reviews_path=reviews_path, topic_model=topic_model, all_reviews_predictions=predictions[1], w2v=w2v)
     print('sentences ranked')
     print(time.time() - start)
@@ -41,7 +44,7 @@ if __name__ == '__main__':
 
     results = 'topsum measurements:\n'
     print('measuring topsum')
-    results += measure_summaries(topsum_path, reviews_path)
+    results += measure_summaries(topsum_path, reviews_path, w2v)
     print(time.time() - start)
 
     results += '\n textsum measurements:\n'
