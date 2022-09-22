@@ -17,6 +17,8 @@ def rank_reviews(results_path, reviews_path, topic_model: BERTopic, all_reviews_
         rankings_per_product = list()
         for id in product_ids:
             reviews = amazon_df[amazon_df['product_id'] == id]
+            product_category = reviews['product_category'][0]
+            print(product_category)
             review_texts = reviews['review_body']
             sentences = list()
             for sentence in review_texts:
@@ -55,7 +57,7 @@ def rank_reviews(results_path, reviews_path, topic_model: BERTopic, all_reviews_
             beta = 0.05
             predictions_per_sentence = topic_model.transform(sentences)[1]
             for topic in range(nr_topics):
-                ranking = pd.DataFrame(data={'product_id': id, 'product_category': reviews['product_category'][0], 'text': sentences, 'relevance': np.transpose(predictions_per_sentence)[topic], 'sentiment_deviation': np.transpose(deviations)[topic], 'information': avg_norms})
+                ranking = pd.DataFrame(data={'product_id': id, 'product_category': product_category, 'text': sentences, 'relevance': np.transpose(predictions_per_sentence)[topic], 'sentiment_deviation': np.transpose(deviations)[topic], 'information': avg_norms})
                 ranking['score'] = ranking['relevance'] + alpha * \
                     ranking['sentiment_deviation'] + beta*ranking['information']
                 ranking = ranking.sort_values(by=['score'], ascending=False)
