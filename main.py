@@ -6,7 +6,7 @@ from src.topic_modeling.bert_modeling import make_predictions
 from src.ranking.sentence_ranking import rank_reviews
 from src.summarization.summarizer import summarize
 from src.metrics.measure_summaries import measure_summaries
-from src.preprocessing.textsum_on_reviews import summarize_reviews
+from src.preprocessing.textsum_on_reviews import summarize_with_pipeline
 import gensim.downloader
 
 
@@ -54,7 +54,7 @@ if __name__ == '__main__':
 
     textsum_path = './data/textsum/textsum_on_' + dataset + '_summaries.json'
     if not os.path.exists(textsum_path):
-        summarize_reviews(textsum_path, reviews_path)
+        summarize_with_pipeline(textsum_path, reviews_path)
     print('measuring textsum')
     results += measure_summaries(textsum_path, reviews_path)
     results_file = open('./results/' + dataset + '/measurements.txt', 'w')

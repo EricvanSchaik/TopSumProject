@@ -9,8 +9,9 @@ def count_words(path: str):
     summaries = df_read_json(path)
     total_freq = 0
     total_words = 0
-    for review in summaries['text']:
-        for word in review.split():
+    for index, summary in enumerate(summaries['text']):
+        print('counting common words in summary ' + str(index))
+        for word in summary.split():
             if word in coca_dict:
                 total_freq += coca_dict[word]
             total_words += 1

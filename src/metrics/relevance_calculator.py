@@ -8,6 +8,7 @@ def calculate_relevance(path: str, w2v: WordToVec) -> np.float64:
     distances = []
     
     for summary_index, summary in enumerate(df['text']):
+        print('calculating relevance of summary ' + str(summary_index))
         subject = w2v.word_to_vec(subjects[summary_index])
         for word in summary.split():
             word_vector = w2v.word_to_vec(word)

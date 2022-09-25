@@ -20,13 +20,14 @@ def test_summaries(path) -> dict:
     summaries = df_read_json(path)
     correct = 0
     total = 0
-    for review in summaries['text']:
+    for index, summary in enumerate(summaries['text']):
         processed = ''
-        for word in review.split():
+        for word in summary.split():
             processed += word + ' '
             next_word = run_model(processed, model=model, tokenizer=tokenizer)[0]
             current_index = len(processed)
-            if review[current_index:current_index+len(next_word)] == next_word:
+            if summary[current_index:current_index+len(next_word)] == next_word:
                 correct += 1
             total += 1
+        print('predicted summary ' + str(index))
     return {'correct': correct, 'total': total, 'ratio': correct/total}

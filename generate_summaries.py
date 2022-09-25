@@ -6,7 +6,7 @@ from src.topic_modeling.bert_modeling import make_predictions
 from src.ranking.sentence_ranking import rank_reviews
 from src.summarization.summarizer import summarize
 from src.metrics.measure_summaries import measure_summaries
-from src.preprocessing.textsum_on_reviews import summarize_reviews
+from src.preprocessing.textsum_on_reviews import summarize_with_pipeline
 import gensim.downloader
 
 

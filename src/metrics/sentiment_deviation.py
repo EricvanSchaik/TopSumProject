@@ -9,7 +9,8 @@ def measure_deviation(summaries_path: str, reviews_path: str) -> str:
     reviews = df_read_json(reviews_path)
     sia = SentimentIntensityAnalyzer()
     deviations = list()
-    for _, summary in summaries.iterrows():
+    for index, summary in summaries.iterrows():
+        print('measure sentiment deviation in summary ' + str(index))
         summary_sent = sia.polarity_scores(summary['text'])['compound']
         review_texts = reviews[reviews['product_id'] == summary['product_id']]['review_body']
         deviation = list()
