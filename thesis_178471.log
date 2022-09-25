@@ -1,0 +1,35 @@
+	Adding nVidia Cuda Toolkit 11.3
+	Adding nVidia cuDNN 8.2 (.1.32)
+gpu devices: 0,1
+topic model and predictions generated
+4.522651195526123
+Traceback (most recent call last):
+  File "/home/s1721380/researchTopics/src/ranking/sentence_ranking.py", line 12, in rank_reviews
+    with open(results_path, 'rb') as rankings_file:
+FileNotFoundError: [Errno 2] No such file or directory: './results/yelp/rankings'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/s1721380/.conda/envs/researchTopics/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 3621, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 136, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 163, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2131, in pandas._libs.hashtable.Int64HashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2140, in pandas._libs.hashtable.Int64HashTable.get_item
+KeyError: 0
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "main.py", line 33, in <module>
+    rankings_per_product = rank_reviews(results_path=rankings_path, reviews_path=reviews_path, topic_model=topic_model, all_reviews_predictions=predictions[1], w2v=w2v)
+  File "/home/s1721380/researchTopics/src/ranking/sentence_ranking.py", line 58, in rank_reviews
+    ranking = pd.DataFrame(data={'product_id': id, 'product_category': reviews['product_category'][0], 'text': sentences, 'relevance': np.transpose(predictions_per_sentence)[topic], 'sentiment_deviation': np.transpose(deviations)[topic], 'information': avg_norms})
+  File "/home/s1721380/.conda/envs/researchTopics/lib/python3.8/site-packages/pandas/core/series.py", line 958, in __getitem__
+    return self._get_value(key)
+  File "/home/s1721380/.conda/envs/researchTopics/lib/python3.8/site-packages/pandas/core/series.py", line 1069, in _get_value
+    loc = self.index.get_loc(label)
+  File "/home/s1721380/.conda/envs/researchTopics/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 3623, in get_loc
+    raise KeyError(key) from err
+KeyError: 0
