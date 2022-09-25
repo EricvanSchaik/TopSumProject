@@ -18,7 +18,7 @@ import gensim.downloader
 if __name__ == '__main__':
     start = time.time()
 
-    dataset = 'yelp'
+    dataset = 'amazon'
 
     reviews_path = './data/sorted_' + dataset + '/products_8_reviews.json'
     
@@ -42,28 +42,28 @@ if __name__ == '__main__':
     print('summaries generated')
     print(time.time() - start)
 
-    results = 'topsum measurements:\n'
-    print('measuring topsum')
-    results += measure_summaries(topsum_path, reviews_path, w2v)
-    print(time.time() - start)
+    # results = 'topsum measurements:\n'
+    # print('measuring topsum')
+    # results += measure_summaries(topsum_path, reviews_path, w2v)
+    # print(time.time() - start)
 
-    results += '\n textsum measurements:\n'
+    # results += '\n textsum measurements:\n'
 
-    textsum_path = './data/textsum/textsum_on_' + dataset + '_summaries.json'
-    if not os.path.exists(textsum_path):
-        summarize_reviews(textsum_path, reviews_path)
-    print('measuring textsum')
-    results += measure_summaries(textsum_path, reviews_path)
-    print(time.time() - start)
+    # textsum_path = './data/textsum/textsum_on_' + dataset + '_summaries.json'
+    # if not os.path.exists(textsum_path):
+    #     summarize_reviews(textsum_path, reviews_path)
+    # print('measuring textsum')
+    # results += measure_summaries(textsum_path, reviews_path)
+    # print(time.time() - start)
 
-    print('measuring coop')
-    results += '\n coop measurements:\n'
-    results += measure_summaries('./data/coop/coop_on_' + dataset + '_summaries.json', reviews_path)
-    print(time.time() - start)
-    print(results)
-    results_file = open('./results/' + dataset + '/measurements.txt', 'w')
-    results_file.write(results)
-    results_file.close()
+    # print('measuring coop')
+    # results += '\n coop measurements:\n'
+    # results += measure_summaries('./data/coop/coop_on_' + dataset + '_summaries.json', reviews_path)
+    # print(time.time() - start)
+    # print(results)
+    # results_file = open('./results/' + dataset + '/measurements.txt', 'w')
+    # results_file.write(results)
+    # results_file.close()
 
     end = time.time()
     print('this script took ' + str(end-start) + ' seconds')
