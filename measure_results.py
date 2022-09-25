@@ -12,7 +12,7 @@ import gensim.downloader
 if __name__ == '__main__':
     start = time.time()
 
-    dataset = 'amazon'
+    dataset = 'yelp'
 
     reviews_path = './data/sorted_' + dataset + '/products_8_reviews.json'
     topsum_path = './results/' + dataset + '/topsum_summaries.json'
@@ -21,15 +21,17 @@ if __name__ == '__main__':
     if not os.path.exists(textsum_path):
         summarize_manually(textsum_path, reviews_path)
 
-    # w2v = WordToVec()
+    w2v = WordToVec()
 
-    # results = 'topsum measurements:\n'
-    # print('measuring topsum')
-    # results += measure_summaries(topsum_path, reviews_path, w2v)
-    # results_file = open('./results/' + dataset + '/measurements.txt', 'w')
-    # results_file.write(results)
-    # results_file.close()
-    # print(time.time() - start)
+    results_path = './results/' + dataset + '/measurements.txt'
+
+    results = 'topsum measurements:\n'
+    results_file = open(results_path, 'a')
+    results_file.write(results)
+    results_file.close()
+    print('measuring topsum')
+    measure_summaries(topsum_path, reviews_path, w2v, results_path)
+    print(time.time() - start)
 
     # results = '\n textsum measurements:\n'
 
