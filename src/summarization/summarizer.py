@@ -13,12 +13,12 @@ def summarize(rankings_per_product, results_path: str) -> list:
     except ValueError:
         product_categories = list()
         
-        summarizer = pipeline("summarization", model="google/pegasus-cnn_dailymail", truncation=True) 
         retainment_ratio = 0.2
         full_texts = list()
         product_ids = list()
         i = 0
         for rankings_per_topic in rankings_per_product:
+            print('filtering ranking' + str(i))
             i += 1
             full_text = ''
             for ranking in rankings_per_topic:
