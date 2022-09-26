@@ -7,7 +7,7 @@ from transformers import PegasusForConditionalGeneration, PegasusTokenizer
 import torch
 
 
-def summarize(rankings_per_product, results_path: str) -> list:
+def summarize(rankings_per_product, results_path: str):
     try:
         result = df_read_json(results_path)
     except ValueError:
@@ -18,7 +18,6 @@ def summarize(rankings_per_product, results_path: str) -> list:
         product_ids = list()
         i = 0
         for rankings_per_topic in rankings_per_product:
-            print('filtering ranking' + str(i))
             i += 1
             full_text = ''
             for ranking in rankings_per_topic:
@@ -35,11 +34,10 @@ def summarize(rankings_per_product, results_path: str) -> list:
         model = PegasusForConditionalGeneration.from_pretrained(model_name).to(device)
         summaries = list()
         for index, text in enumerate(full_texts):
-            print('summary ' + str(index))
+            print('generating summary ' + str(index))
             batch = tokenizer(text, truncation=True, padding="longest", return_tensors="pt").to(device)
             translated = model.generate(**batch)
             tgt_text = tokenizer.batch_decode(translated, skip_special_tokens=True)
             summaries.append(tgt_text[0])
         
         df_to_json(pd.DataFrame(data={'product_id': product_ids, 'text': summaries, 'product_category': product_categories}), path=results_path)
-    return result
