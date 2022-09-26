@@ -25,31 +25,29 @@ if __name__ == '__main__':
 
     results_path = './results/' + dataset + '/measurements.txt'
 
-    results = 'topsum measurements:\n'
+    # results = 'topsum measurements:\n'
+    # results_file = open(results_path, 'a')
+    # results_file.write(results)
+    # results_file.close()
+    # print('measuring topsum')
+    # measure_summaries(topsum_path, reviews_path, w2v, results_path)
+    # print(time.time() - start)
+
+    results = '\n textsum measurements:\n'
     results_file = open(results_path, 'a')
     results_file.write(results)
     results_file.close()
-    print('measuring topsum')
-    measure_summaries(topsum_path, reviews_path, w2v, results_path)
+    print('measuring textsum')
+    measure_summaries(textsum_path, reviews_path, w2v, results_path)
     print(time.time() - start)
 
-    # results = '\n textsum measurements:\n'
-
-    # print('measuring textsum')
-    # results += measure_summaries(textsum_path, reviews_path)
-    # results_file = open('./results/' + dataset + '/measurements.txt', 'w')
-    # results_file.write(results)
-    # results_file.close()
-    # print(time.time() - start)
-
-    # print('measuring coop')
-    # results = '\n coop measurements:\n'
-    # results += measure_summaries('./data/coop/coop_on_' + dataset + '_summaries.json', reviews_path)
-    # print(time.time() - start)
-    # print(results)
-    # results_file = open('./results/' + dataset + '/measurements.txt', 'w')
-    # results_file.write(results)
-    # results_file.close()
+    results = '\n coop measurements:\n'
+    results_file = open(results_path, 'a')
+    results_file.write(results)
+    results_file.close()
+    print('measuring coop')
+    measure_summaries('./data/coop/coop_on_' + dataset + '_summaries.json', reviews_path, w2v, results_path)
+    print(time.time() - start)
 
     end = time.time()
     print('this script took ' + str(end-start) + ' seconds')
